@@ -37,7 +37,7 @@
 					<div class="radio">
 						<label for="conyuge"><input id="conyuge" type="radio" name="relacion2" value="conyuge">Cónyuge</label>
 						<label for="hijo"><input id="hijo" type="radio" name="relacion2" value="hijo">Hijo</label>
-						<label for="hijo"><input id="sinrelacion" type="radio" name="relacion2" value="srelacion">Sin relación</label>
+						<label for="hijo"><input id="sinrelacion" type="radio" name="relacion2" value="srelacion">Otra relación</label>
 					</div>
 					<br>
 					<button class="btn btn-default btn-block" type="button" id="agregarfam">Agregar Familiar</button>
@@ -78,58 +78,6 @@
 						<br>
 					</div>
 				</form>
-				<div id="guardarImagen"></div>
-				<br>
-
-				<div class="table-responsive">
-					<table id="famTable" class="table">
-						<tr>
-							<th>Nombre</th>
-							<th>Edad</th>
-							<th>Sexo</th>
-							<th>Ocupación</th>
-							<th>Relación</th>
-							<th>Madre</th>
-							<th>Padre</th>
-							<th>Pareja</th>
-						</tr>
-						<tr>
-							<td><input id="nombre2" type="text" name="nombre"></td>
-							<td><input id="edad2" type="text" name="edad"></td>
-							<td>
-								<input type="radio" name="gender2" value="M"> Hombre<br>
-								<input type="radio" name="gender2" value="F"> Mujer
-							</td>
-							<td><input id="ocupacion2" type="text" name="ocupacion"></td>
-							<td>
-								<select>
-					                        <option value="conyugue">Conyugue</option>
-					                        <option value="hijo">Hijo</option>
-					                        <option value="yerno">Yerno</option>
-					                        <option value="nuera">Nuera</option>
-					                        <option value="nuera">Nieto</option>
-					                    </select>
-							</td>
-							<td>
-								<select name="madre" id="madre">
-					                        <option value="none" selected="Selected">Seleccionar</option>
-					                    </select>
-							</td>
-							<td>
-								<select name="padre" id="padre">
-					                        <option value="none" selected="Selected">Seleccionar</option>
-					                    </select>
-							</td>
-							<td>
-								<select name="pareja" id="pareja">
-					                        <option value="none" selected="Selected">Seleccionar</option>
-					                    </select>
-							</td>
-							<td><input type="button" id="delPOIbutton" value="Delete" onclick="deleteRow(this)" /></td>
-							<td><input type="button" id="guardarFam" value="Guardar" onclick="agregarFamiliar2(myDiagram,this)" /></td>
-						</tr>
-					</table>
-				</div>
 			</div>
 		</div>
 	</div>

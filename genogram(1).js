@@ -13,8 +13,8 @@ function init() {
 					layerName: "Grid"
 				}, // the predefined layer that is behind everything else
 				$(go.Shape, "Circle", {
-					fill: "yellow",
-					stroke: null
+					fill: null,
+					stroke: "blue"
 				}),
 				$(go.Placeholder)
 			),
@@ -267,7 +267,6 @@ function init() {
 }
 
 function getURL() {
-	
 	$.ajax({
 		type: 'post',
 		url: 'process.php',

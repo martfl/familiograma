@@ -87,7 +87,7 @@ function agregarFamiliar(diagram, options) {
 	} else if (options.relacion == "hijo") {
 		var marriage = [];
 		myDiagram.selection.each(function (part) {
-			marriage.push(part.data.key);
+			marriage.push(part.data);
 		});
 		if (marriage.length > 2) {
 			alert("Más de 2 familiares seleccionados");
@@ -98,8 +98,17 @@ function agregarFamiliar(diagram, options) {
 			return;
 		}
 
-		var link = findMarriage(diagram, marriage[0], marriage[1]);
+		var link = findMarriage(diagram, marriage[0].key, marriage[1].key);
 		if (link != null) {
+			
+			if(marriage[0].s == 'M') {
+				node.m = marriage[0].key;
+				node.f = marriage[1].key;
+			} else {
+				node.f = marriage[0].key;
+				node.m = marriage[1].key;
+			}
+			
 			model.addNodeData(node);
 			var cdata = {
 				from: link.data.labelKeys[0],
@@ -223,7 +232,19 @@ function agregarRelacion(diagram) {
 }
 
 function save(diagram) {
-
+	var jsonData = jQuery.parseJSON(diagram.model.toJson());
+	var data = JSON.stringify(jsonData.nodeDataArray);
+	$.ajax({
+		type: 'post',
+		url: 'saveFile.php',
+		data: {
+			id : $("#id").val(),
+			json: data
+		},
+		success: function(data) {
+			console.log(data)
+		}
+	});
 }
 
 function agregarComentario(diagram) {
