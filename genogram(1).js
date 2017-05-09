@@ -180,7 +180,7 @@ function init() {
 					maxSize: new go.Size(80, NaN)
 				},
 				new go.Binding("text", "n")),
-		  	$(go.TextBlock, {
+			$(go.TextBlock, {
 					textAlign: "center",
 					maxSize: new go.Size(80, NaN)
 				},
@@ -221,7 +221,7 @@ function init() {
 					maxSize: new go.Size(80, NaN)
 				},
 				new go.Binding("text", "n")),
-		  	$(go.TextBlock, {
+			$(go.TextBlock, {
 					textAlign: "center",
 					maxSize: new go.Size(80, NaN)
 				},
@@ -262,8 +262,25 @@ function init() {
 			})
 		));
 
-	jQuery.getJSON("json/data.json", load);
+	//jQuery.getJSON("json/data.json", load);
+	getURL();
 }
+
+function getURL() {
+	
+	$.ajax({
+		type: 'post',
+		url: 'process.php',
+		data: {
+			id : $("#id").val()
+		},
+		success: function(data) {
+			//console.log(data);
+			jQuery.getJSON(data, load)
+		}
+	})
+}
+
 
 function load(jsondata) {
 	// n: name, s: sex, m: mother, f: father, ux: wife, vir: husband, a: attributes/markers

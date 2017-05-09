@@ -52,6 +52,15 @@ function updateData(text, field) {
 	}
 }
 
+$("#agregarfam").click(function () {
+	agregarFamiliar(myDiagram, {
+		'name': $("#nombre2").val(),
+		'edad': $("#edad2").val(),
+		'sexo': $('input[name=gender2]:checked').val(),
+		'relacion': $('input[name=relacion2]:checked').val()
+	})
+});
+
 function agregarFamiliar(diagram, options) {
 	var person = diagram.selection.first();
 	if (person === null) return;
@@ -100,6 +109,8 @@ function agregarFamiliar(diagram, options) {
 		} else {
 			alert("Matrimonio no encontrado");
 		}
+	} else if (options.relacion == "srelacion") {
+		model.addNodeData(node);
 	}
 	diagram.commitTransaction("add relative");
 }
@@ -177,4 +188,44 @@ function borrarNodo(diagram) {
 		alert(person.data.n + " no puede ser borrado.");
 	}
 	diagram.commitTransaction("delete Node");
+}
+
+function myCallback(blob) {
+	var url = window.URL.createObjectURL(blob);
+	var filename = "familiograma.png";
+	var a = document.createElement("a");
+	a.style = "display: none";
+	a.href = url;
+	a.download = filename;
+	// IE 11
+	if (window.navigator.msSaveBlob !== undefined) {
+		window.navigator.msSaveBlob(blob, filename);
+		return;
+	}
+	document.body.appendChild(a);
+	requestAnimationFrame(function () {
+		a.click();
+		window.URL.revokeObjectURL(url);
+		document.body.removeChild(a);
+	});
+}
+
+function makeBlob(myDiagram) {
+	var blob = myDiagram.makeImageData({
+		background: "white",
+		returnType: "blob",
+		callback: myCallback
+	});
+}
+
+function agregarRelacion(diagram) {
+
+}
+
+function save(diagram) {
+
+}
+
+function agregarComentario(diagram) {
+
 }

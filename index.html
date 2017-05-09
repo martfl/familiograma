@@ -20,7 +20,7 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<div class="form-group">
-					<input id="id" type="hidden" value="1">
+					<input id="id" type="hidden" value="2">
 					<label class="control-label">Nombre:</label>
 					<input id="nombre2" class="form-control" type="text" name="nombre">
 					<br>
@@ -37,14 +37,22 @@
 					<div class="radio">
 						<label for="conyuge"><input id="conyuge" type="radio" name="relacion2" value="conyuge">Cónyuge</label>
 						<label for="hijo"><input id="hijo" type="radio" name="relacion2" value="hijo">Hijo</label>
+						<label for="hijo"><input id="sinrelacion" type="radio" name="relacion2" value="srelacion">Sin relación</label>
 					</div>
 					<br>
 					<button class="btn btn-default btn-block" type="button" id="agregarfam">Agregar Familiar</button>
+					<br>
 					<button class="btn btn-default btn-block" onclick="agregarPadres(myDiagram)">Agregar Padres</button>
+					<button class="btn btn-default btn-block" onclick="agregarComentario(myDiagram)">Agregar Comentario</button>
+					<button class="btn btn-default btn-block" onclick="agregarRelacion(myDiagram)">Agregar Relación</button>
 				</div>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<h1 class="page-header">Familiograma</h1>
+				<div class="form-group">
+					<input type="button" class="btn btn-default" onclick="save(myDiagram)" value="Guardar">
+					<input type="button" class="btn btn-default" onclick="makeBlob(myDiagram)" value="Exportar Imagen">
+				</div>
 				<div id="myDiagramDiv" style="border: solid 1px black; width:100%; height:500px"></div>
 				<br>
 				<form class="form-inline">
@@ -68,10 +76,11 @@
 							<input type="button" class="btn btn-default" onclick="borrarNodo(myDiagram)" style="bottom: 0;" value="Borrar Familiar">
 						</div>
 						<br>
-					</div>	
+					</div>
 				</form>
+				<div id="guardarImagen"></div>
 				<br>
-<!--
+
 				<div class="table-responsive">
 					<table id="famTable" class="table">
 						<tr>
@@ -121,7 +130,6 @@
 						</tr>
 					</table>
 				</div>
--->
 			</div>
 		</div>
 	</div>
@@ -129,30 +137,12 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="go-debug.js"></script>
-	<script src="genogram(1).js"></script>
-	<script src="functions.js"></script>
 	<script>
-		var id = $("#id").val();
-
+		
 		$(document).ready(function() {
 			$("input[name=gender2][value=M]").click();
 			$("input[name=relacion2][value=conyuge]").click();
-			$.ajax({
-				type: "POST",
-				url: "process.php",
-				data: {
-					'id': id
-				},
-				success: function(data) {
-					data = $.parseJSON(data);
-					//$("#nombre").val(data.n);
-					//$("#edad").val(data.e);
-					buildJSON(data, id);
-				}
-
-			});
 		});
-
 		function buildJSON(data, id) {
 			var paciente = {};
 			paciente["key"] = 0;
@@ -175,17 +165,9 @@
 			});
 			*/
 		}
-
-		$("#agregarfam").click(function() {
-			agregarFamiliar(myDiagram, {
-				'name': $("#nombre2").val(),
-				'edad': $("#edad2").val(),
-				'sexo': $('input[name=gender2]:checked').val(),
-				'relacion': $('input[name=relacion2]:checked').val()
-			})
-		});
-
 	</script>
+	<script src="genogram(1).js"></script>
+	<script src="functions.js"></script>
 </body>
 
 </html>
