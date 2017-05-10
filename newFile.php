@@ -8,7 +8,7 @@
     $handle = fopen($my_file, 'w') or die('Cannot open file:  '.$my_file);
     fwrite($handle, $json);
     fclose($handle);
-	$query = "UPDATE `familiograma` SET `json` = '{$my_file}', `comment` = '{$comment}'  WHERE `familiograma`.`id` = {$id}";
-	print_r($query);
+	$query = "INSERT INTO `familiograma` (`id`, `json`, `comment`) VALUES ('{$id}', '{$my_file}', '{$comment}')";
+	//print_r($query);
 	$show = mysqli_query($link, $query) or die ("Error");
 ?>

@@ -1,14 +1,13 @@
 <?php
-$link = mysqli_connect("localhost","root","","amss");
-if(mysqli_connect_errno())
-    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+include "db.php";
+$link = connectDB("localhost", "root", "", "amss");
+
 $id = $_POST["id"];
-$query = "SELECT json FROM familiograma WHERE id = ".$id;
+$query = "SELECT json, comment FROM familiograma WHERE id = ".$id;
 $show = mysqli_query($link, $query) or die ("Error");
 $row = mysqli_fetch_array($show);
 
-echo $row['json'];
 
-//$array = array('n'=>$row['nombre']." ".$row['apellido'], 's'=>$row['sexo'], 'e'=>$row['edad']);
-//echo json_encode($array);
+$array = array('json'=>$row['json'], 'comment'=>$row['comment']);
+echo json_encode($array);
 ?>
