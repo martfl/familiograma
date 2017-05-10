@@ -92,23 +92,23 @@ function updateData(text, field) {
 					var opts = data.a;
 					opts = opts.concat(["A"]);
 					model.setDataProperty(data, "a", opts);
-					console.log(opts);
+					//console.log(opts);
 				} else if ($('input[name="viveConPaciente"]:checked').length === 0) {
 					var opts = data.a;
 					var index = opts.indexOf("A");
-					console.log(index);
+					//console.log(index);
 					opts = removeFromOpts(opts, index);
 					opts = opts.concat([""]);
 					opts.pop();
 					model.setDataProperty(data, "a", opts);
-					console.log(opts);
+					//console.log(opts);
 				}
 			} else if (text === "economico") {
 				if ($('input[name="apoyoEconomico"]:checked').length > 0) {
 					var opts = data.a;
 					opts = opts.concat(["D"]);
 					model.setDataProperty(data, "a", opts);
-					console.log(opts);
+					//console.log(opts);
 				} else if ($('input[name="apoyoEconomico"]:checked').length === 0) {
 					var opts = data.a;
 					var index = opts.indexOf("D");
@@ -117,14 +117,14 @@ function updateData(text, field) {
 					opts = opts.concat([""]);
 					opts.pop();
 					model.setDataProperty(data, "a", opts);
-					console.log(opts);
+					//console.log(opts);
 				}
 			} else if (text === "finado") {
 				if ($('input[name="finado"]:checked').length > 0) {
 					var opts = data.a;
 					opts = opts.concat(["S"]);
 					model.setDataProperty(data, "a", opts);
-					console.log(opts);
+					//console.log(opts);
 				} else if ($('input[name="finado"]:checked').length === 0) {
 					var opts = data.a;
 					var index = opts.indexOf("S");
@@ -133,7 +133,7 @@ function updateData(text, field) {
 					opts = opts.concat([""]);
 					opts.pop();
 					model.setDataProperty(data, "a", opts);
-					console.log(opts);
+					//console.log(opts);
 				}
 			}
 		}
@@ -170,7 +170,7 @@ $("#agregarfam").click(function () {
 });
 
 function agregarFamiliar(diagram, options) {
-	console.log(options)
+	//console.log(options);
 	var person = diagram.selection.first();
 	if (person === null) return;
 	diagram.startTransaction("add relative");
@@ -226,15 +226,14 @@ function agregarFamiliar(diagram, options) {
 			alert("Selecciona 2 familiares, por favor")
 			return;
 		}
-
 		var link = findMarriage(diagram, marriage[0], marriage[1]);
 		if (link != null) {
 			if (marriage[0].s == 'M') {
-				node.m = marriage[0].key;
-				node.f = marriage[1].key;
+				node.m = marriage[0];
+				node.f = marriage[1];
 			} else {
-				node.f = marriage[0].key;
-				node.m = marriage[1].key;
+				node.f = marriage[0];
+				node.m = marriage[1];
 			}
 			model.addNodeData(node);
 			var cdata = {
