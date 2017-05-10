@@ -57,11 +57,25 @@ $("#agregarfam").click(function () {
 		'name': $("#nombre2").val(),
 		'edad': $("#edad2").val(),
 		'sexo': $('input[name=gender2]:checked').val(),
-		'relacion': $('input[name=relacion2]:checked').val()
+		'relacion': $('input[name=relacion2]:checked').val(),
+		'finado': $('input[name=finado]:checked').is(':checked'),
+		'nse': $('input[name=nse]:checked').val(),
+		'telefono': $('#telefono').val(),
+		'cuidador': $('input[name=cuidador]:checked').is(':checked'),
+		'estadoCivil': $('input[name=estadoCivil]:checked').val(),
+		'pacienteFamiliar': $('input[name=pacienteFamiliar]:checked').val(),
+		'familiarPaciente': $('input[name=familiarPaciente]:checked').val(),
+		'escolaridad': $('select[name=escolaridad]').val(),
+        'religion': $('select[name=religion]').val(),
+		'ocupacion': $("#ocupacion").val(),
+		'estadoOcupa': $('select[id=estadoOcupa]').val(),
+		'viven': $('input[name=viven]').is(':checked')
+
 	})
 });
 
 function agregarFamiliar(diagram, options) {
+	console.log(options)
 	var person = diagram.selection.first();
 	if (person === null) return;
 	diagram.startTransaction("add relative");
@@ -69,7 +83,20 @@ function agregarFamiliar(diagram, options) {
 	var node = {
 		n: options.name,
 		e: options.edad,
-		s: options.sexo
+		s: options.sexo,
+        relacion: options.relacion,
+        finado: options.finado,
+        nse: options.nse,
+        telefono: options.telefono,
+        cuidador: options.cuidador,
+        estadoCivil: options.estadoCivil,
+        pacienteFamiliar: options.pacienteFamiliar,
+        familiarPaciente: options.familiarPaciente,
+        escolaridad: options.escolaridad,
+        religion: options.religion,
+        ocupacion: options.ocupacion,
+        estadoOcupa: options.estadoOcupa,
+        viven: options.viven
 	}
 	if (options.relacion == "conyuge") {
 		model.addNodeData(node);
@@ -245,6 +272,7 @@ function agregarRelacion(diagram) {
 function save(diagram) {
 	var jsonData = jQuery.parseJSON(diagram.model.toJson());
 	var data = JSON.stringify(jsonData.nodeDataArray);
+
 	var data = data.replace(/,*{"s":"LinkLabel","key":-*\d*}/g, "");
 	var comment = $("#comment").val();
 	$.ajax({
