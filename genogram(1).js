@@ -241,7 +241,9 @@ function init() {
 	myDiagram.linkTemplate = // for parent-child relationships
 		$(go.Link, {
 				routing: go.Link.Orthogonal,
+				selectionAdorned: true,
 				curviness: 15,
+				reshapable: true,
 				layerName: "Background",
 				selectable: false,
 				fromSpot: go.Spot.Bottom,
@@ -249,7 +251,16 @@ function init() {
 			},
 			$(go.Shape, {
 				strokeWidth: 2
-			})
+			}),
+		  	//TIPOS DE RELACIONES
+//			$(go.TextBlock, "+", {
+//				segmentIndex: 0,
+//				segmentOffset: new go.Point(NaN, NaN),
+//			}),
+//			$(go.TextBlock, "-", {
+//				segmentIndex: -1,
+//				segmentOffset: new go.Point(NaN, NaN),
+//			})
 		);
 
 	myDiagram.linkTemplateMap.add("Marriage", // for marriage relationships
@@ -271,11 +282,12 @@ function getURL() {
 		type: 'post',
 		url: 'process.php',
 		data: {
-			id : $("#id").val()
+			id: $("#id").val()
 		},
-		success: function(data) {
-			//console.log(data);
-			jQuery.getJSON(data, load)
+		dataType: 'json',
+		success: function (data) {
+			jQuery.getJSON(data.json, load);
+			$("#comment").val(data.comment);
 		}
 	})
 }
@@ -299,7 +311,7 @@ function setupDiagram(diagram, array, focusId) {
 		});
 	setupMarriages(diagram);
 	setupParents(diagram);
-	``
+
 	var node = diagram.findNodeForKey(focusId);
 	if (node !== null) {
 		diagram.select(node);
@@ -356,7 +368,9 @@ function setupMarriages(diagram) {
 						from: key,
 						to: wife,
 						labelKeys: [mlab.key],
-						category: "Marriage"
+						category: "Marriage",
+						text: "-",
+						toText: "+"
 					};
 					model.addLinkData(mdata);
 				}
