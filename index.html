@@ -37,7 +37,7 @@
 					<div class="radio">
 						<label for="conyuge"><input id="conyuge" type="radio" name="relacion2" value="conyuge">Cónyuge</label>
 						<label for="hijo"><input id="hijo" type="radio" name="relacion2" value="hijo">Hijo</label>
-						<label for="hijo"><input id="sinrelacion" type="radio" name="relacion2" value="srelacion">Otra relación</label>
+						<label for="hijo"><input id="sinrelacion" type="radio" name="relacion2" value="srelacion">Sin relación</label>
 					</div>
 					<br>
 					<button class="btn btn-default btn-block" type="button" id="agregarfam">Agregar Familiar</button>
@@ -73,11 +73,85 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="control-label">Ocupación:</label>
+							<input id="ocupacion" class="form-control" type="text" name="ocupacion" onchange="updateData(this.value, 'ocupacion')">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Estado Civil:</label>
+							<input id="estadoCivil" class="form-control" type="text" name="estadoCivil" onchange="updateData(this.value, 'estadoCivil')">
+						</div>
+						<div class="form-group">
+							<label class="control-label">NSE:</label>
+							<input id="nse" class="form-control" type="text" name="nse" onchange="updateData(this.value, 'nse')">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Escolaridad:</label>
+							<input id="escoalridad" class="form-control" type="text" name="escolaridad" onchange="updateData(this.value, 'escolaridad')">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Religion:</label>
+							<input id="religion" class="form-control" type="text" name="religion" onchange="updateData(this.value, 'religion')">
+						</div>
+						<div class="form-group checkbox">
+							<label><input type="checkbox" value="vive" name="viveConPaciente" onchange="updateData(this.value, 'a')">Vive con paciente</label>
+						</div>
+						<div class="form-group checkbox">
+							<label><input type="checkbox" value="economico" name="apoyoEconomico" onchange="updateData(this.value, 'a')">Apoyo Económico</label>
+						</div>
+						<div class="form-group checkbox">
+							<label><input type="checkbox" value="finado" name="finado" onchange="updateData(this.value, 'a')">Finado</label>
+						</div>
+						<div class="form-group">
 							<input type="button" class="btn btn-default" onclick="borrarNodo(myDiagram)" style="bottom: 0;" value="Borrar Familiar">
 						</div>
 						<br>
 					</div>
 				</form>
+				<div id="guardarImagen"></div>
+				<br>
+
+				<div class="table-responsive">
+					<table id="famTable" class="table">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Edad</th>
+								<th>Sexo</th>
+								<th>NSE</th>
+								<th>Estado Civil</th>
+								<th>Escolaridad</th>
+								<th>Paciente-Familiar</th>
+								<th>Familiar-Paciente</th>
+								<th>Religión</th>
+								<th>Ocupación</th>
+								<th>Estado Ocupacional</th>
+								<th>Vive con el paciente</th>
+								<th>Apoyo económico</th>
+								<th>Finado</th>
+								<th>Cuida al Paciente</th>
+							</tr>
+							<tr>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+								<td><p></p></td>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -97,7 +171,7 @@
 			paciente["n"] = data.n
 			paciente["e"] = data.e;
 			paciente["s"] = data.s;
-			paciente["a"] = ["A"];
+			paciente["a"] = data.a;
 			//console.log(paciente);
 			/*
 			$.ajax({

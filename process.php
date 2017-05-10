@@ -11,4 +11,6 @@ echo $row['json'];
 
 //$array = array('n'=>$row['nombre']." ".$row['apellido'], 's'=>$row['sexo'], 'e'=>$row['edad']);
 //echo json_encode($array);
+
+
 ?>
