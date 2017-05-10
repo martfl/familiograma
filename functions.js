@@ -152,11 +152,25 @@ $("#agregarfam").click(function () {
 		'name': $("#nombre2").val(),
 		'edad': $("#edad2").val(),
 		'sexo': $('input[name=gender2]:checked').val(),
-		'relacion': $('input[name=relacion2]:checked').val()
+		'relacion': $('input[name=relacion2]:checked').val(),
+		'finado': $('input[name=finado]:checked').is(':checked'),
+		'nse': $('input[name=nse]:checked').val(),
+		'telefono': $('#telefono').val(),
+		'cuidador': $('input[name=cuidador]:checked').is(':checked'),
+		'estadoCivil': $('input[name=estadoCivil]:checked').val(),
+		'pacienteFamiliar': $('input[name=pacienteFamiliar]:checked').val(),
+		'familiarPaciente': $('input[name=familiarPaciente]:checked').val(),
+		'escolaridad': $('select[name=escolaridad]').val(),
+        'religion': $('select[name=religion]').val(),
+		'ocupacion': $("#ocupacion").val(),
+		'estadoOcupa': $('select[id=estadoOcupa]').val(),
+		'viven': $('input[name=viven]').is(':checked')
+
 	})
 });
 
 function agregarFamiliar(diagram, options) {
+	console.log(options)
 	var person = diagram.selection.first();
 	if (person === null) return;
 	diagram.startTransaction("add relative");
@@ -164,13 +178,33 @@ function agregarFamiliar(diagram, options) {
 	var node = {
 		n: options.name,
 		e: options.edad,
-		s: options.sexo
+		s: options.sexo,
+        relacion: options.relacion,
+        finado: options.finado,
+        nse: options.nse,
+        telefono: options.telefono,
+        cuidador: options.cuidador,
+        estadoCivil: options.estadoCivil,
+        pacienteFamiliar: options.pacienteFamiliar,
+        familiarPaciente: options.familiarPaciente,
+        escolaridad: options.escolaridad,
+        religion: options.religion,
+        ocupacion: options.ocupacion,
+        estadoOcupa: options.estadoOcupa,
+        viven: options.viven
 	}
 	if (options.relacion == "conyuge") {
 		model.addNodeData(node);
 		var mlab = {
 			s: "LinkLabel"
 		};
+		if (node.s == "M") {
+			node.ux = person.data.key;
+			person.data.vir = node.key
+		} else {
+			node.vir = person.data.key;
+			person.data.ux = node.key
+		}
 		model.addNodeData(mlab);
 		var mdata = {
 			from: person.data.key,
@@ -195,6 +229,13 @@ function agregarFamiliar(diagram, options) {
 
 		var link = findMarriage(diagram, marriage[0], marriage[1]);
 		if (link != null) {
+			if (marriage[0].s == 'M') {
+				node.m = marriage[0].key;
+				node.f = marriage[1].key;
+			} else {
+				node.f = marriage[0].key;
+				node.m = marriage[1].key;
+			}
 			model.addNodeData(node);
 			var cdata = {
 				from: link.data.labelKeys[0],
@@ -211,7 +252,7 @@ function agregarFamiliar(diagram, options) {
 	diagram.commitTransaction("add relative");
 }
 
-
+// n: name, s: sex, m: mother, f: father, ux: wife, vir: husband, a: attributes/markers
 function agregarPadres(diagram) {
 	var person = diagram.selection.first();
 	if (person === null) return; // no one is selected
@@ -234,7 +275,9 @@ function agregarPadres(diagram) {
 		n: "New Father",
 		s: "M",
 		e: "",
-		a: []
+
+		a: ["B"],
+		ux: mom.key
 	};
 	model.addNodeData(dad);
 	// add a label node for the marriage link
@@ -249,12 +292,15 @@ function agregarPadres(diagram) {
 		labelKeys: [mlab.key],
 		category: "Marriage"
 	};
+
 	model.addLinkData(mdata);
 	// add child link
 	var cdata = {
 		from: mlab.key,
 		to: person.data.key
 	};
+	person.data.f = dad.key;
+	person.data.m = mom.key;
 	model.addLinkData(cdata);
 	updateTable(diagram);
 	diagram.commitTransaction("add parents");
@@ -376,9 +422,35 @@ function agregarRelacion(diagram) {
 }
 
 function save(diagram) {
+	var jsonData = jQuery.parseJSON(diagram.model.toJson());
+	var data = JSON.stringify(jsonData.nodeDataArray);
+
+	var data = data.replace(/,*{"s":"LinkLabel","key":-*\d*}/g, "");
+	var comment = $("#comment").val();
+	$.ajax({
+		type: 'post',
+		url: 'saveFile.php',
+		data: {
+			id: $("#id").val(),
+			json: data,
+			comment: comment
+		},
+		success: function (data) {
+			//console.log(data);
+		}
+	});
 
 }
 
 function agregarComentario(diagram) {
-
+	diagram.startTransaction("add comment");
+	var model = myDiagram.model;
+	var node = go.GraphObject.make(go.TextBlock, {
+		text: "select and then click to edit",
+		background: "lightblue",
+		editable: true,
+		isMultiline: false
+	});
+	model.addNodeData(node);
+	diagram.commitTransaction("add comment");
 }

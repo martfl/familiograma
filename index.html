@@ -2,9 +2,11 @@
 <html>
 
 <head>
+	<script src="validate.js"></script>
+	<script src="validaciones.js"></script>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
-	<title>familiograma</title>
+	<title>Familiograma</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/dashboard.css" rel="stylesheet">
 	<style>
@@ -15,62 +17,155 @@
 	</style>
 </head>
 
-<body onload="init()">
+<body>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
+
 				<div class="form-group">
-					<input id="id" type="hidden" value="2">
+					<input id="id" type="hidden" value="3">
 					<label class="control-label">Nombre:</label>
 					<input id="nombre2" class="form-control" type="text" name="nombre">
 					<br>
-					<label class="control-label">Edad:</label>
+					<label class="control-label">Edad</label>
 					<input id="edad2" class="form-control" type="text" name="edad">
 					<br>
-					<label class="control-label">Sexo:</label>
+					<label class="control-label">Sexo</label>
 					<div class="radio">
-						<label for="M"><input id="M" type="radio" name="gender2" value="M"> Hombre</label>
-						<label for="F"><input id="F" type="radio" name="gender2" value="F"> Mujer</label>
+						<label for="M"><input id="M" type="radio" name="gender2" value="M">Hombre</label>
+						<label for="F"><input id="F" type="radio" name="gender2" value="F">Mujer</label>
 					</div>
 					<br>
-					<label class="control-label">Relación:</label>
+					<label class="control-label">Parentesco</label>
 					<div class="radio">
 						<label for="conyuge"><input id="conyuge" type="radio" name="relacion2" value="conyuge">Cónyuge</label>
 						<label for="hijo"><input id="hijo" type="radio" name="relacion2" value="hijo">Hijo</label>
 						<label for="hijo"><input id="sinrelacion" type="radio" name="relacion2" value="srelacion">Sin relación</label>
 					</div>
 					<br>
-					<button class="btn btn-default btn-block" type="button" id="agregarfam">Agregar Familiar</button>
+					<label class="control-label">Finado</label>
+					<div class="checkbox">
+						<label for="finado"><input id="finado" type="checkbox" name="finado" value="true">Si</label>
+					</div>
+					<label class="control-label">NSE</label>
+					<div class="radio">
+						<label for="Alta"><input id="alta" type="radio" name="nse" value="alta">Alta</label>
+						<label for="Media"><input id="media" type="radio" name="nse" value="media">Media</label>
+						<label for="Baja"><input checked="" id="baja" type="radio" name="nse" value="baja">Baja</label>
+					</div>
 					<br>
+					<label class="control-label">Teléfono</label>
+					<input class="form-control" id="telefono" type="text" name="telefono">
+					<br>
+					<label class="control-label">Cuidador</label>
+					<div class="checkbox">
+						<label for="cuidador"><input id="cuidador" type="checkbox" name="cuidador" value="true">Cuidador</label>
+					</div>
+					<br>
+					<label class="control-label">Estado Civil:</label>
+					<div class="radio">
+						<label for="casado"><input id="casado" type="radio" name="estadoCivil" value="casado">Casado</label>
+						<label for="soltero"><input id="divorciado" type="radio" name="estadoCivil" value="divorciado">Divorciado</label>
+						<label for="soltero"><input checked='' id="soltero" type="radio" name="estadoCivil" value="soltero">Soltero</label>
+						<label for="viudo"><input id="viudo" type="radio" name="estadocivil" value="viudo">Viudo</label>
+					</div>
+					<br>
+					<label class="control-label">Calidad de relación</label>
+					<label class="control-label">Paciente-Familiar</label>
+					<div class="radio">
+						<label for="buena"><input checked="" id="buena" type="radio" name="pacienteFamiliar" value="buena"> Buena</label>
+						<label for="regular"><input id="regular" type="radio" name="pacienteFamiliar" value="regular"> Regular</label>
+						<label for="mala"><input id="mala" type="radio" name="pacienteFamiliar" value="mala"> Mala</label>
+					</div>
+					<label class="control-label">Familiar-Paciente</label>
+					<div class="radio">
+						<label for="buenaFp"><input checked="" id="buenaFP" type="radio" name="familiarPaciente" value="buena"> Buena</label>
+						<label for="regularFP"><input id="regularFP" type="radio" name="familiarPaciente" value="regular"> Regular</label>
+						<label for="malaFP"><input id="malaFP" type="radio" name="familiarPaciente" value="mala"> Mala</label>
+					</div>
+					<br>
+					<label class="control-label">Escolaridad</label>
+						<select class="form-control" id="escolaridad" name="escolaridad">
+							<option selected="selected" value="Ninguna">Ninguna</option>
+							<option value="primaria">Primaria</option>
+							<option value="secundaria">Secundaria</option>
+							<option value="bachillerato">Bachillerato</option>
+							<option value="tecnico">Tecnica</option>
+							<option value="preparatoria">Preparatoria</option>
+							<option value="universidad">Universidad</option>
+							<option value="maestria">Maestria</option>
+							<option value="doctorado">Doctorado</option>
+						</select>
+					<br>
+					<label class="control-label">Religión</label>
+						<select class="form-control" id="religion" name="religion">
+							<option value="Ninguna">Ninguna</option>
+							<option value="catolica">Catolica</option>
+							<option value="cristiana">Cristiana</option>
+							<option value="testigo">Testigo de Jeovha</option>
+						</select>
+					<br>
+					<label class="control-label">Ocupación</label>
+					<input class="form-control" id="ocupacion" type="text" name="ocupacion">
+					<br>
+					<label class="control-label">Estado ocupacional</label>
+					<select class="form-control" id="estadoOcupa">
+						<option value="activo">Activo</option>
+						<option value="jubilado">Jubilado</option>
+						<option value="desempleado">Desempleado</option>
+					</select>
+					<br>
+					<label class="control-label">Vive con Paciente</label>
+					<div class="checkbox">
+						<label for="viven"><input id="viven" type="checkbox" name="viven" value="true">Si</label>
+					</div>
+
+
+					<button class="btn btn-default btn-block" type="button" id="agregarfam">Agregar Familiar</button>
 					<button class="btn btn-default btn-block" onclick="agregarPadres(myDiagram)">Agregar Padres</button>
 					<button class="btn btn-default btn-block" onclick="agregarComentario(myDiagram)">Agregar Comentario</button>
 					<button class="btn btn-default btn-block" onclick="agregarRelacion(myDiagram)">Agregar Relación</button>
 				</div>
 			</div>
+
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<h1 class="page-header">Familiograma</h1>
 				<div class="form-group">
 					<input type="button" class="btn btn-default" onclick="save(myDiagram)" value="Guardar">
 					<input type="button" class="btn btn-default" onclick="makeBlob(myDiagram)" value="Exportar Imagen">
 				</div>
-				<div id="myDiagramDiv" style="border: solid 1px black; width:100%; height:500px"></div>
+				<div class="col-md-9 col-xs-12">
+					<div id="myDiagramDiv" style="border: solid 1px black; width:100%; height:500px"></div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="comment">Comentarios</label>
+						<textarea class="form-control" rows="5" id="comment"></textarea>
+					</div>
+				</div>
 				<br>
-				<form class="form-inline">
-					<div id="propertiesPanel" class="form-group">
-						<div class="form-group">
-							<label class="control-label">Nombre:</label>
-							<input id="nombre" class="form-control" type="text" name="nombre" onchange="updateData(this.value, 'n')">
-						</div>
-						<div class="form-group">
-							<label class="control-label">Edad:</label>
-							<input id="edad" class="form-control" type="text" name="edad" onchange="updateData(this.value, 'e')">
-						</div>
-						<div class="form-group">
-							<label class="control-label">Sexo:</label>
-							<div class="radio">
-								<label class="radio-inline" for="M"><input id="M" type="radio" name="gender" onchange="updateData(this.value, 's')" value="M"> Hombre</label>
-								<label class="radio-inline" for="F"><input id="F" type="radio" name="gender" onchange="updateData(this.value, 's')" value="F"> Mujer</label>
+				<div class="col-xs-12">
+					<form class="form-inline">
+						<div id="propertiesPanel" class="form-group">
+							<div class="form-group">
+								<label class="control-label">Nombre:</label>
+								<input id="nombre" class="form-control" type="text" name="nombre" onchange="updateData(this.value, 'n')">
 							</div>
+							<div class="form-group">
+								<label class="control-label">Edad:</label>
+								<input id="edad" class="form-control" type="text" name="edad" onchange="updateData(this.value, 'e')">
+							</div>
+							<div class="form-group">
+								<label class="control-label">Sexo:</label>
+								<div class="radio">
+									<label class="radio-inline" for="M"><input id="M" type="radio" name="gender" onchange="updateData(this.value, 's')" value="M"> Hombre</label>
+									<label class="radio-inline" for="F"><input id="F" type="radio" name="gender" onchange="updateData(this.value, 's')" value="F"> Mujer</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<input type="button" class="btn btn-default" onclick="borrarNodo(myDiagram)" style="bottom: 0;" value="Borrar Familiar">
+							</div>
+							<br>
 						</div>
 						<div class="form-group">
 							<label class="control-label">Ocupación:</label>
@@ -105,7 +200,6 @@
 							<input type="button" class="btn btn-default" onclick="borrarNodo(myDiagram)" style="bottom: 0;" value="Borrar Familiar">
 						</div>
 						<br>
-					</div>
 				</form>
 				<div id="guardarImagen"></div>
 				<br>
@@ -157,36 +251,38 @@
 	</div>
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="go-debug.js"></script>
 	<script>
-		
 		$(document).ready(function() {
 			$("input[name=gender2][value=M]").click();
 			$("input[name=relacion2][value=conyuge]").click();
-		});
-		function buildJSON(data, id) {
-			var paciente = {};
-			paciente["key"] = 0;
-			paciente["n"] = data.n
-			paciente["e"] = data.e;
-			paciente["s"] = data.s;
-			paciente["a"] = data.a;
-			//console.log(paciente);
-			/*
 			$.ajax({
-				type: "POST",
-				url: "saveFile.php",
+				type: 'post',
 				data: {
-					data: paciente,
-					id: id,
+					id: $("#id").val()
 				},
+				url: 'getPatient.php',
 				success: function(data) {
-					//console.log(data);
+					if(data != "") {
+					var newFam = "[{\"key\":0,\"n\":\"" + data + "\",\"e\":\"\",\"s\":\"M\", \"a\":[\"A\"]}]";
+					$.ajax({
+						type: 'post',
+						url: 'newFile.php',
+						data: {
+							id: $("#id").val(),
+							json: newFam,
+							comment: ""
+						},
+						success: function(data) {
+							console.log(data);
+						}
+					});
+					}
+					init();
 				}
 			});
-			*/
-		}
+		});
+
 	</script>
 	<script src="genogram(1).js"></script>
 	<script src="functions.js"></script>
