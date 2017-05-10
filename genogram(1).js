@@ -13,8 +13,8 @@ function init() {
 					layerName: "Grid"
 				}, // the predefined layer that is behind everything else
 				$(go.Shape, "Circle", {
-					fill: "yellow",
-					stroke: null
+					fill: null,
+					stroke: "blue"
 				}),
 				$(go.Placeholder)
 			),
@@ -172,7 +172,7 @@ function init() {
 						itemTemplate: $(go.Panel,
 							$(go.Shape, {
 									stroke: "black",
-									strokeWidth: 1
+									strokeWidth: 0
 								},
 								new go.Binding("fill", "", attrFill),
 								new go.Binding("geometry", "", maleGeometry))
@@ -244,6 +244,7 @@ function init() {
 			fromEndSegmentLength: 20
 		}));
 
+	
 
 	myDiagram.linkTemplate = // for parent-child relationships
 		$(go.Link, {
@@ -259,15 +260,15 @@ function init() {
 			$(go.Shape, {
 				strokeWidth: 2
 			}),
-		  	//TIPOS DE RELACIONES
-//			$(go.TextBlock, "+", {
-//				segmentIndex: 0,
-//				segmentOffset: new go.Point(NaN, NaN),
-//			}),
-//			$(go.TextBlock, "-", {
-//				segmentIndex: -1,
-//				segmentOffset: new go.Point(NaN, NaN),
-//			})
+			//TIPOS DE RELACIONES
+			//			$(go.TextBlock, "+", {
+			//				segmentIndex: 0,
+			//				segmentOffset: new go.Point(NaN, NaN),
+			//			}),
+			//			$(go.TextBlock, "-", {
+			//				segmentIndex: -1,
+			//				segmentOffset: new go.Point(NaN, NaN),
+			//			})
 		);
 
 	myDiagram.linkTemplateMap.add("Marriage", // for marriage relationships
@@ -282,7 +283,7 @@ function init() {
 
 	//jQuery.getJSON("json/data.json", load);
 
-	
+
 	getURL();
 }
 
@@ -295,6 +296,7 @@ function getURL() {
 		},
 		dataType: 'json',
 		success: function (data) {
+			console.log(data.json);
 			jQuery.getJSON(data.json, load);
 			$("#comment").val(data.comment);
 		}
@@ -306,7 +308,7 @@ function load(jsondata) {
 	// n: name, s: sex, m: mother, f: father, ux: wife, vir: husband, a: attributes/markers
 	setupDiagram(myDiagram, jsondata, 0);
 	updateTable(myDiagram);
-	
+
 }
 
 
@@ -335,17 +337,16 @@ function setupDiagram(diagram, array, focusId) {
 		//  spouse.pickable = false;
 		//});
 	}
-	console.log(go.Geometry.stringify("Circle"));
-	var nodos=diagram.nodes;
-	var model = diagram.model;
-	while(nodos.next()){
-		var data = nodos.value.data;
-		console.log(data.key);
-		if(nodos.value.data.key===0){
-			console.log("!!!!");
-			model.setDataProperty(data,"a",["M","A"]);
-		}
-	}
+
+	//	var nodos = diagram.nodes;
+	//	var model = diagram.model;
+	//	while (nodos.next()) {
+	//		var data = nodos.value.data;
+	//
+	//		if (nodos.value.data.key === 0) {
+	//			//model.setDataProperty(data, "a", ["M", "A"]);
+	//		}
+	//	}
 }
 
 function findMarriage(diagram, a, b) { // A and B are node keys

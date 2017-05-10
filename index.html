@@ -2,8 +2,6 @@
 <html>
 
 <head>
-	<script src="validate.js"></script>
-	<script src="validaciones.js"></script>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
 	<title>Familiograma</title>
@@ -23,7 +21,7 @@
 			<div class="col-sm-3 col-md-2 sidebar">
 
 				<div class="form-group">
-					<input id="id" type="hidden" value="3">
+					<input id="id" type="hidden" value="2">
 					<label class="control-label">Nombre:</label>
 					<input id="nombre2" class="form-control" type="text" name="nombre">
 					<br>
@@ -85,7 +83,7 @@
 					</div>
 					<br>
 					<label class="control-label">Escolaridad</label>
-						<select class="form-control" id="escolaridad" name="escolaridad">
+					<select class="form-control" id="escolaridad" name="escolaridad">
 							<option selected="selected" value="Ninguna">Ninguna</option>
 							<option value="primaria">Primaria</option>
 							<option value="secundaria">Secundaria</option>
@@ -98,7 +96,7 @@
 						</select>
 					<br>
 					<label class="control-label">Religión</label>
-						<select class="form-control" id="religion" name="religion">
+					<select class="form-control" id="religion" name="religion">
 							<option value="Ninguna">Ninguna</option>
 							<option value="catolica">Catolica</option>
 							<option value="cristiana">Cristiana</option>
@@ -166,85 +164,116 @@
 								<input type="button" class="btn btn-default" onclick="borrarNodo(myDiagram)" style="bottom: 0;" value="Borrar Familiar">
 							</div>
 							<br>
+							<div class="form-group">
+								<label class="control-label">Ocupación:</label>
+								<input id="ocupacion" class="form-control" type="text" name="ocupacion" onchange="updateData(this.value, 'ocupacion')">
+							</div>
+							<div class="form-group">
+								<label class="control-label">Estado Civil:</label>
+								<input id="estadoCivil" class="form-control" type="text" name="estadoCivil" onchange="updateData(this.value, 'estadoCivil')">
+							</div>
+							<div class="form-group">
+								<label class="control-label">NSE:</label>
+								<input id="nse" class="form-control" type="text" name="nse" onchange="updateData(this.value, 'nse')">
+							</div>
+							<div class="form-group">
+								<label class="control-label">Escolaridad:</label>
+								<input id="escoalridad" class="form-control" type="text" name="escolaridad" onchange="updateData(this.value, 'escolaridad')">
+							</div>
+							<div class="form-group">
+								<label class="control-label">Religion:</label>
+								<input id="religion" class="form-control" type="text" name="religion" onchange="updateData(this.value, 'religion')">
+							</div>
+							<div class="form-group checkbox">
+								<label><input type="checkbox" value="vive" name="viveConPaciente" onchange="updateData(this.value, 'a')">Vive con paciente</label>
+							</div>
+							<div class="form-group checkbox">
+								<label><input type="checkbox" value="economico" name="apoyoEconomico" onchange="updateData(this.value, 'a')">Apoyo Económico</label>
+							</div>
+							<div class="form-group checkbox">
+								<label><input type="checkbox" value="finado" name="finado" onchange="updateData(this.value, 'a')">Finado</label>
+							</div>
+							<div class="form-group">
+								<input type="button" class="btn btn-default" onclick="borrarNodo(myDiagram)" style="bottom: 0;" value="Borrar Familiar">
+							</div>
+							<br>
 						</div>
-						<div class="form-group">
-							<label class="control-label">Ocupación:</label>
-							<input id="ocupacion" class="form-control" type="text" name="ocupacion" onchange="updateData(this.value, 'ocupacion')">
-						</div>
-						<div class="form-group">
-							<label class="control-label">Estado Civil:</label>
-							<input id="estadoCivil" class="form-control" type="text" name="estadoCivil" onchange="updateData(this.value, 'estadoCivil')">
-						</div>
-						<div class="form-group">
-							<label class="control-label">NSE:</label>
-							<input id="nse" class="form-control" type="text" name="nse" onchange="updateData(this.value, 'nse')">
-						</div>
-						<div class="form-group">
-							<label class="control-label">Escolaridad:</label>
-							<input id="escoalridad" class="form-control" type="text" name="escolaridad" onchange="updateData(this.value, 'escolaridad')">
-						</div>
-						<div class="form-group">
-							<label class="control-label">Religion:</label>
-							<input id="religion" class="form-control" type="text" name="religion" onchange="updateData(this.value, 'religion')">
-						</div>
-						<div class="form-group checkbox">
-							<label><input type="checkbox" value="vive" name="viveConPaciente" onchange="updateData(this.value, 'a')">Vive con paciente</label>
-						</div>
-						<div class="form-group checkbox">
-							<label><input type="checkbox" value="economico" name="apoyoEconomico" onchange="updateData(this.value, 'a')">Apoyo Económico</label>
-						</div>
-						<div class="form-group checkbox">
-							<label><input type="checkbox" value="finado" name="finado" onchange="updateData(this.value, 'a')">Finado</label>
-						</div>
-						<div class="form-group">
-							<input type="button" class="btn btn-default" onclick="borrarNodo(myDiagram)" style="bottom: 0;" value="Borrar Familiar">
-						</div>
-						<br>
-				</form>
-				<div id="guardarImagen"></div>
-				<br>
+					</form>
+					<div id="guardarImagen"></div>
+					<br>
 
-				<div class="table-responsive">
-					<table id="famTable" class="table">
-						<thead>
-							<tr>
-								<th>Nombre</th>
-								<th>Edad</th>
-								<th>Sexo</th>
-								<th>NSE</th>
-								<th>Estado Civil</th>
-								<th>Escolaridad</th>
-								<th>Paciente-Familiar</th>
-								<th>Familiar-Paciente</th>
-								<th>Religión</th>
-								<th>Ocupación</th>
-								<th>Estado Ocupacional</th>
-								<th>Vive con el paciente</th>
-								<th>Apoyo económico</th>
-								<th>Finado</th>
-								<th>Cuida al Paciente</th>
-							</tr>
-							<tr>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-								<td><p></p></td>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table id="famTable" class="table">
+							<thead>
+								<tr>
+									<th>Nombre</th>
+									<th>Edad</th>
+									<th>Sexo</th>
+									<th>NSE</th>
+									<th>Estado Civil</th>
+									<th>Escolaridad</th>
+									<th>Paciente-Familiar</th>
+									<th>Familiar-Paciente</th>
+									<th>Religión</th>
+									<th>Ocupación</th>
+									<th>Estado Ocupacional</th>
+									<th>Vive con el paciente</th>
+									<th>Apoyo económico</th>
+									<th>Finado</th>
+									<th>Cuida al Paciente</th>
+								</tr>
+								<tr>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+									<td>
+										<p></p>
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -252,6 +281,8 @@
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="go-debug.js"></script>
+	<script src="validate.js"></script>
+	<script src="validaciones.js"></script>
 	<script>
 		$(document).ready(function() {
 			$("input[name=gender2][value=M]").click();
@@ -263,20 +294,20 @@
 				},
 				url: 'getPatient.php',
 				success: function(data) {
-					if(data != "") {
-					var newFam = "[{\"key\":0,\"n\":\"" + data + "\",\"e\":\"\",\"s\":\"M\", \"a\":[\"A\"]}]";
-					$.ajax({
-						type: 'post',
-						url: 'newFile.php',
-						data: {
-							id: $("#id").val(),
-							json: newFam,
-							comment: ""
-						},
-						success: function(data) {
-							console.log(data);
-						}
-					});
+					if (data != "") {
+						var newFam = "[{\"key\":0,\"n\":\"" + data + "\",\"e\":\"\",\"s\":\"M\", \"a\":[\"A\"]}]";
+						$.ajax({
+							type: 'post',
+							url: 'newFile.php',
+							data: {
+								id: $("#id").val(),
+								json: newFam,
+								comment: ""
+							},
+							success: function(data) {
+								console.log(data);
+							}
+						});
 					}
 					init();
 				}
