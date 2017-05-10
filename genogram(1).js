@@ -13,8 +13,8 @@ function init() {
 					layerName: "Grid"
 				}, // the predefined layer that is behind everything else
 				$(go.Shape, "Circle", {
-					fill: null,
-					stroke: "blue"
+					fill: "yellow",
+					stroke: null
 				}),
 				$(go.Placeholder)
 			),
@@ -55,6 +55,8 @@ function init() {
 				return "lightgray";
 			case "L":
 				return "magenta";
+			case "M":
+				return "transparent";
 			case "S":
 				return "red";
 			default:
@@ -68,6 +70,7 @@ function init() {
 	var trsq = go.Geometry.parse("F M20 1 l19 0 0 19 -19 0z");
 	var brsq = go.Geometry.parse("F M20 20 l19 0 0 19 -19 0z");
 	var blsq = go.Geometry.parse("F M1 20 l19 0 0 19 -19 0z");
+	var main = go.Geometry.parse("F M 20,20 B 180,360,20,20,40 z");
 	var slash = go.Geometry.parse("F M38 0 L40 0 40 2 2 40 0 40 0 38z");
 
 	function maleGeometry(a) {
@@ -96,6 +99,8 @@ function init() {
 				return blsq;
 			case "L":
 				return blsq;
+			case "M":
+				return main;
 			case "S":
 				return slash;
 			default:
@@ -136,6 +141,8 @@ function init() {
 				return blarc;
 			case "L":
 				return blarc;
+			case "M":
+				return main;
 			case "S":
 				return slash;
 			default:
@@ -164,8 +171,8 @@ function init() {
 				$(go.Panel, { // for each attribute show a Shape at a particular place in the overall square
 						itemTemplate: $(go.Panel,
 							$(go.Shape, {
-									stroke: null,
-									strokeWidth: 0
+									stroke: "black",
+									strokeWidth: 1
 								},
 								new go.Binding("fill", "", attrFill),
 								new go.Binding("geometry", "", maleGeometry))
@@ -274,6 +281,8 @@ function init() {
 		));
 
 	//jQuery.getJSON("json/data.json", load);
+
+	
 	getURL();
 }
 
@@ -296,6 +305,8 @@ function getURL() {
 function load(jsondata) {
 	// n: name, s: sex, m: mother, f: father, ux: wife, vir: husband, a: attributes/markers
 	setupDiagram(myDiagram, jsondata, 0);
+	updateTable(myDiagram);
+	
 }
 
 
@@ -323,6 +334,17 @@ function setupDiagram(diagram, array, focusId) {
 		//  spouse.opacity = 0;
 		//  spouse.pickable = false;
 		//});
+	}
+	console.log(go.Geometry.stringify("Circle"));
+	var nodos=diagram.nodes;
+	var model = diagram.model;
+	while(nodos.next()){
+		var data = nodos.value.data;
+		console.log(data.key);
+		if(nodos.value.data.key===0){
+			console.log("!!!!");
+			model.setDataProperty(data,"a",["M","A"]);
+		}
 	}
 }
 

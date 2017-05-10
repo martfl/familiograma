@@ -8,6 +8,7 @@ $show = mysqli_query($link, $query) or die ("Error");
 $row = mysqli_fetch_array($show);
 
 
+
 $array = array('json'=>$row['json'], 'comment'=>$row['comment']);
 echo json_encode($array);
 ?>

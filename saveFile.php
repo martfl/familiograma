@@ -1,4 +1,5 @@
 <?php
+
 	include "db.php";
 	$link = connectDB("localhost", "root", "", "amss");
     $json = $_POST["json"];
@@ -12,3 +13,4 @@
 	print_r($query);
 	$show = mysqli_query($link, $query) or die ("Error");
 ?>
+

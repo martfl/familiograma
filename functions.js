@@ -8,7 +8,31 @@ function updateProperties(data) {
 		document.getElementById("propertiesPanel").style.display = "block";
 		document.getElementById("nombre").value = data.n || "";
 		document.getElementById("edad").value = data.e || "";
+		document.getElementById("ocupacion").value = data.ocupacion || "";
+		document.getElementById("estadoCivil").value = data.estadoCivil || "";
+		document.getElementById("nse").value = data.nse || "";
 		$("input[name=gender][value='" + data.s + "']").prop("checked", true) || "";
+		if(data.a!==undefined){
+			if(data.a.indexOf("A")!=-1){
+				$("input[name=viveConPaciente]").prop("checked",true);
+			}else{
+				$("input[name=viveConPaciente]").prop("checked",false);
+			}
+			if(data.a.indexOf("D")!=-1){
+			$("input[name=apoyoEconomico]").prop("checked",true);
+			}else{
+				$("input[name=apoyoEconomico]").prop("checked",false);
+			}
+			if(data.a.indexOf("S")!=-1){
+			$("input[name=finado]").prop("checked",true);
+			}else{
+				$("input[name=finado]").prop("checked",false);
+			}
+		}else{
+			$("input[name=viveConPaciente]").prop("checked",false);
+			$("input[name=apoyoEconomico]").prop("checked",false);
+			$("input[name=finado]").prop("checked",false);
+		}
 	}
 }
 
@@ -38,6 +62,7 @@ function updateData(text, field) {
 	var node = myDiagram.selection.first();
 	// maxSelectionCount = 1, so there can only be one Part in this collection
 	var data = node.data;
+	
 	if (node instanceof go.Node && data !== null) {
 		var model = myDiagram.model;
 		model.startTransaction("modified " + field);
@@ -47,9 +72,79 @@ function updateData(text, field) {
 			model.setDataProperty(data, "s", text);
 		} else if (field === "e") {
 			model.setDataProperty(data, "e", text);
+		}else if(field === "ocupacion"){
+			model.setDataProperty(data, "ocupacion", text);
+		}else if(field === "nse"){
+			model.setDataProperty(data, "nse", text);
+		}else if(field === "estadoCivil"){
+			model.setDataProperty(data, "estadoCivil", text);
+		}else if(field === "escolaridad"){
+			model.setDataProperty(data, "escolaridad", text);
+		}else if(field === "religion"){
+			model.setDataProperty(data, "religion", text);
+		}else if(field ==="a"){
+			if(data.a === undefined){
+				model.setDataProperty(data,"a",[])
+			}
+			
+			if(text==="vive"){
+				if($('input[name="viveConPaciente"]:checked').length > 0){
+					var opts = data.a;
+					opts=opts.concat(["A"]);
+					model.setDataProperty(data, "a",opts);
+					console.log(opts);
+				}else if($('input[name="viveConPaciente"]:checked').length === 0){
+					var opts = data.a;
+					var index = opts.indexOf("A");
+					console.log(index);
+					opts = removeFromOpts(opts,index);
+					opts = opts.concat([""]);
+					opts.pop();
+					model.setDataProperty(data, "a",opts);
+					console.log(opts);
+				}	
+			}else if(text==="economico"){
+				if($('input[name="apoyoEconomico"]:checked').length > 0){
+					var opts = data.a;
+					opts=opts.concat(["D"]);
+					model.setDataProperty(data, "a",opts);
+					console.log(opts);
+				}else if($('input[name="apoyoEconomico"]:checked').length === 0){
+					var opts = data.a;
+					var index = opts.indexOf("D");
+					console.log(index);
+					opts = removeFromOpts(opts,index);
+					opts = opts.concat([""]);
+					opts.pop();
+					model.setDataProperty(data, "a",opts);
+					console.log(opts);
+				}
+			}else if(text==="finado"){
+				if($('input[name="finado"]:checked').length > 0){
+					var opts = data.a;
+					opts=opts.concat(["S"]);
+					model.setDataProperty(data, "a",opts);
+					console.log(opts);
+				}else if($('input[name="finado"]:checked').length === 0){
+					var opts = data.a;
+					var index = opts.indexOf("S");
+					console.log(index);
+					opts = removeFromOpts(opts,index);
+					opts = opts.concat([""]);
+					opts.pop();
+					model.setDataProperty(data, "a",opts);
+					console.log(opts);
+				}
+			}
 		}
+		updateTable(myDiagram);
 		model.commitTransaction("modified " + field);
 	}
+}
+
+function removeFromOpts(opts,index){
+	opts.splice(index,1);
+	return opts;
 }
 
 $("#agregarfam").click(function () {
@@ -121,7 +216,7 @@ function agregarFamiliar(diagram, options) {
 	} else if (options.relacion == "hijo") {
 		var marriage = [];
 		myDiagram.selection.each(function (part) {
-			marriage.push(part.data);
+			marriage.push(part.data.key);
 		});
 		if (marriage.length > 2) {
 			alert("Más de 2 familiares seleccionados");
@@ -132,9 +227,8 @@ function agregarFamiliar(diagram, options) {
 			return;
 		}
 
-		var link = findMarriage(diagram, marriage[0].key, marriage[1].key);
+		var link = findMarriage(diagram, marriage[0], marriage[1]);
 		if (link != null) {
-
 			if (marriage[0].s == 'M') {
 				node.m = marriage[0].key;
 				node.f = marriage[1].key;
@@ -142,7 +236,6 @@ function agregarFamiliar(diagram, options) {
 				node.f = marriage[0].key;
 				node.m = marriage[1].key;
 			}
-
 			model.addNodeData(node);
 			var cdata = {
 				from: link.data.labelKeys[0],
@@ -155,6 +248,7 @@ function agregarFamiliar(diagram, options) {
 	} else if (options.relacion == "srelacion") {
 		model.addNodeData(node);
 	}
+	updateTable(diagram);
 	diagram.commitTransaction("add relative");
 }
 
@@ -173,7 +267,7 @@ function agregarPadres(diagram) {
 		n: "New Mother",
 		s: "F",
 		e: "",
-		a: ["A"]
+		a: []
 	};
 	model.addNodeData(mom);
 	// add a father
@@ -181,6 +275,7 @@ function agregarPadres(diagram) {
 		n: "New Father",
 		s: "M",
 		e: "",
+
 		a: ["B"],
 		ux: mom.key
 	};
@@ -207,6 +302,7 @@ function agregarPadres(diagram) {
 	person.data.f = dad.key;
 	person.data.m = mom.key;
 	model.addLinkData(cdata);
+	updateTable(diagram);
 	diagram.commitTransaction("add parents");
 }
 
@@ -225,6 +321,7 @@ function findParentsMarriage(diagram, a) { // A is a node key
 }
 
 function borrarNodo(diagram) {
+
 	var person = diagram.selection.first();
 	if (person === null) return;
 	var model = diagram.model;
@@ -234,6 +331,7 @@ function borrarNodo(diagram) {
 	} else {
 		alert(person.data.n + " no puede ser borrado.");
 	}
+	updateTable(diagram);
 	diagram.commitTransaction("delete Node");
 }
 
@@ -265,6 +363,60 @@ function makeBlob(myDiagram) {
 	});
 }
 
+function updateTable(diagram){
+	var nodos=diagram.nodes;
+	$("#famTable tbody tr").remove();
+	while(nodos.next()){
+		var data = nodos.value.data;
+		if(data.s!=="LinkLabel"){
+			var x=document.getElementById('famTable');
+		    var new_row = x.rows[1].cloneNode(true);
+		    var name = new_row.cells[0].getElementsByTagName('p')[0];
+		    name.innerHTML = nodos.value.data.n;
+		    var age = new_row.cells[1].getElementsByTagName('p')[0];
+		    age.innerHTML = nodos.value.data.e;
+		    var sex = new_row.cells[2].getElementsByTagName('p')[0];
+		    sex.innerHTML = nodos.value.data.s;
+		    var nse = new_row.cells[3].getElementsByTagName('p')[0];
+		    nse.innerHTML = nodos.value.data.nse;
+		    var ec = new_row.cells[4].getElementsByTagName('p')[0];
+		    ec.innerHTML = nodos.value.data.estadoCivil;
+		    var esc = new_row.cells[5].getElementsByTagName('p')[0];
+		    esc.innerHTML = nodos.value.data.escolaridad;
+		    var pacFam = new_row.cells[6].getElementsByTagName('p')[0];
+		    pacFam.innerHTML = nodos.value.data.pacienteFamiliar;
+		    var famPac = new_row.cells[7].getElementsByTagName('p')[0];
+		    famPac.innerHTML = nodos.value.data.familiarPaciente;
+		    var religion = new_row.cells[8].getElementsByTagName('p')[0];
+		    religion.innerHTML = nodos.value.data.religion;
+		    var oc = new_row.cells[9].getElementsByTagName('p')[0];
+		    oc.innerHTML = nodos.value.data.ocupacion;
+		    var estadoOc = new_row.cells[10].getElementsByTagName('p')[0];
+		    estadoOc.innerHTML = nodos.value.data.estadoOcupa;
+		    var vive = new_row.cells[11].getElementsByTagName('p')[0];
+		    var economico = new_row.cells[12].getElementsByTagName('p')[0];
+		    var finado = new_row.cells[13].getElementsByTagName('p')[0];
+		    var cuida = new_row.cells[14].getElementsByTagName('p')[0];
+		    if(data.cuidador===true){
+		    	cuida.innerHTML = "<span class=\"glyphicon glyphicon-ok\"></span>";
+		    }
+		    if(data.a!==undefined){
+		    	if(data.a.indexOf("A")!==-1){
+		    		vive.innerHTML = "<span class=\"glyphicon glyphicon-ok\"></span>";
+		    	}
+		    	if(data.a.indexOf("D")!==-1){
+		    		economico.innerHTML = "<span class=\"glyphicon glyphicon-ok\"></span>";
+		    	}
+		    	if(data.a.indexOf("S")!==-1){
+		    		finado.innerHTML = "<span class=\"glyphicon glyphicon-ok\"></span>";
+		    	}
+		    }
+
+		    x.getElementsByTagName('tbody')[0].appendChild( new_row );
+		}
+	}
+}
+
 function agregarRelacion(diagram) {
 
 }
@@ -287,6 +439,7 @@ function save(diagram) {
 			//console.log(data);
 		}
 	});
+
 }
 
 function agregarComentario(diagram) {
