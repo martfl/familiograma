@@ -1,11 +1,11 @@
 // Update the HTML elements for editing the properties of the currently selected node, if any
+
 function updateProperties(data,diagram) {
 	if (data === null) {
 		document.getElementById("propertiesPanel").style.display = "none";
 		document.getElementById("nombre").value = "";
 		document.getElementById("edad").value = "";
 	} else {
-
 		var paciente = diagram.findNodeForKey(0);
 		var pf;
 
@@ -18,9 +18,6 @@ function updateProperties(data,diagram) {
 				}
 			});
 		}
-
-
-
 		document.getElementById("propertiesPanel").style.display = "block";
 		document.getElementById("nombre").value = data.n || "";
 		document.getElementById("edad").value = data.e || "";
@@ -108,7 +105,6 @@ function updateData(text, field) {
 	var node = myDiagram.selection.first();
 	// maxSelectionCount = 1, so there can only be one Part in this collection
 	var data = node.data;
-
 	var paciente = myDiagram.findNodeForKey(0);
 	var itemO;
 
@@ -121,7 +117,6 @@ function updateData(text, field) {
 			}
 		});
 	}
-
 	if (node instanceof go.Node && data !== null) {
 		var model = myDiagram.model;
 		model.startTransaction("modified " + field);
@@ -153,7 +148,6 @@ function updateData(text, field) {
 			if (data.a === undefined) {
 				model.setDataProperty(data, "a", []);
 			}
-
 			if (text === "vive") {
 				if ($('input[name="viveConPaciente"]:checked').length > 0) {
 					var opts = data.a;
@@ -245,8 +239,9 @@ $("#agregarfam").click(function () {
 	if($('input[name=cuidador2]').is(':checked')){
 		a=a.concat(["L"]);
 	}
-
-
+  var e = parseInt($("#edad2").val());
+  var n = $("#nombre2").val();
+	if(n.length>0 && $("#edad2").val().length>0 && (!isNaN(e))){
 	agregarFamiliar(myDiagram, {
 		'name': $("#nombre2").val(),
 		'edad': $("#edad2").val(),
@@ -263,6 +258,7 @@ $("#agregarfam").click(function () {
 		'estadoOcupa': $('select[id=estadoOcupa2]').val(),
 		'a' : a
 	});
+	}
 });
 
 function agregarFamiliar(diagram, options) {
@@ -489,11 +485,9 @@ function makeBlob(myDiagram) {
 }
 
 function updateTable(diagram) {
-
 	var nodos = diagram.nodes;
 	var paciente = diagram.findNodeForKey(0);
 	var pf;
-
 	$("#famTable tbody tr").remove();
 	while (nodos.next()) {
 		var data = nodos.value.data;
@@ -507,8 +501,6 @@ function updateTable(diagram) {
 					}
 				});
 			}
-
-
 			var x = document.getElementById('famTable');
 			var new_row = x.rows[1].cloneNode(true);
 			var name = new_row.cells[0].getElementsByTagName('p')[0];

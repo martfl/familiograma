@@ -292,11 +292,7 @@ function init() {
 				stroke: "blue"
 			})
 		));
-
-	
 	getURL();
-
-
 }
 
 function getURL() {
@@ -340,7 +336,6 @@ function setupDiagram(diagram, array, focusId) {
 	setupParents(diagram);
 
 	var node = diagram.findNodeForKey(focusId);
-
 	if (node !== null) {
 		diagram.select(node);
 		// remove any spouse for the person under focus:

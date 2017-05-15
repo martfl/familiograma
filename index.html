@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -11,7 +11,6 @@
 		label {
 			display: block;
 		}
-
 	</style>
 </head>
 
@@ -19,16 +18,16 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-md-3 sidebar">
-				<div class="form-group">
+				<form id="datos" class="form-group" action="/familiograma" >
 					<input id="id" type="hidden">
 					<div class="row">
 						<div class="col-sm-6">
 							<label class="control-label">Nombre:</label>
-							<input id="nombre2" class="form-control" type="text" name="nombre">
+							<input id="nombre2" placeholder="Nombre" class="form-control" pattern=".{3,}" type="text" name="nombre" required >
 						</div>
 						<div class="col-sm-6">
 							<label class="control-label">Edad</label>
-							<input id="edad2" class="form-control" type="text" name="edad">
+							<input id="edad2" class="form-control" placeholder="edad" type="number" name="edad"  required >
 						</div>
 					</div>
 					<br>
@@ -74,7 +73,7 @@
 						</div>
 						<div class="col-sm-6">
 							<label class="control-label">Teléfono</label>
-							<input class="form-control" id="telefono2" type="text" name="telefono2">
+							<input class="form-control" id="telefono2" type="tel" name="telefono2">
 						</div>
 					</div>
 					<br>
@@ -112,7 +111,7 @@
 						<div class="col-sm-6">
 							<label class="control-label">Familiar-Paciente</label>
 							<div class="radio">
-								<label for="buenaFp"><input checked="" id="buenaFP" type="radio" name="familiarPaciente2" value="+"> Buena</label>
+								<label for="buenaFP"><input checked="" id="buenaFP" type="radio" name="familiarPaciente2" value="+"> Buena</label>
 								<label for="malaFP"><input id="malaFP" type="radio" name="familiarPaciente2" value="-"> Mala</label>
 							</div>
 						</div>
@@ -170,15 +169,12 @@
 							</div>
 						</div>
 						<div class="col-sm-6">
-							
 						</div>
 					</div>
-
-					<button class="btn btn-default btn-block" type="button" id="agregarfam">Agregar Familiar</button>
+					<button class="btn btn-default btn-block" type="submit" id="agregarfam">Agregar Familiar</button>
 					<button class="btn btn-default btn-block" onclick="agregarPadres(myDiagram)">Agregar Padres</button>
-				</div>
+				</form>
 			</div>
-
 			<div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 main">
 				<h1 class="page-header">Familiograma</h1>
 				<div class="form-group">
@@ -317,6 +313,7 @@
 									<div class="radio">
 										<label for="buena"><input id="buena" type="radio" name="pacienteFamiliar" value="+" onchange="updateData(this.value, 'pacienteFamiliar')">Buena</label>
 										<label for="mala"><input id="mala" type="radio" name="pacienteFamiliar" value="-" onchange="updateData(this.value, 'pacienteFamiliar')"> Mala</label>
+
 									</div>
 								</div>
 								<div class="col-sm-3">
