@@ -272,7 +272,7 @@ function init() {
 			},
 			$(go.Shape, {
 				strokeWidth: 2
-			}),
+			})
 			//TIPOS DE RELACIONES
 			//			$(go.TextBlock, "+", {
 			//				segmentIndex: 0,
