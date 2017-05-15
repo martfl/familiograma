@@ -198,10 +198,9 @@ $("#agregarfam").click(function () {
 	if($('input[name=cuidador2]').is(':checked')){
 		a=a.concat(["L"]);
 	}
-    var e = parseInt($("#edad2").val());
-    var n = $("#nombre2").val();
+  var e = parseInt($("#edad2").val());
+  var n = $("#nombre2").val();
 	if(n.length>0 && $("#edad2").val().length>0 && (!isNaN(e))){
-
 	agregarFamiliar(myDiagram, {
 		'name': $("#nombre2").val(),
 		'edad': $("#edad2").val(),
