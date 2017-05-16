@@ -1,7 +1,7 @@
 <?php
 	include "db.php";
 	
-	$link = connectDB("socialis.cpivj72xcp0f.us-west-2.rds.amazonaws.com", "root", "developer", "Socialis-dev");
+	$link = connectDB();
 	$id = $_POST["id"];
 	$query = "SELECT nombre, apellido_materno, apellido_paterno, fecha_nacimiento, genero FROM PACIENTE WHERE id = {$id}";
 	$show = mysqli_query($link, $query) or die ("Error");
