@@ -1,6 +1,6 @@
 // Update the HTML elements for editing the properties of the currently selected node, if any
 
-function updateProperties(data,diagram) {
+function updateProperties(data, diagram) {
 	if (data === null) {
 		document.getElementById("propertiesPanel").style.display = "none";
 		document.getElementById("nombre").value = "";
@@ -10,14 +10,22 @@ function updateProperties(data,diagram) {
 		var pf;
 
 		var thisKey = data.key;
-		if(thisKey!==0){
+		if (thisKey !== 0) {
 			var rels = paciente.data.rel;
-			rels.forEach(function changeRel(item){
-				if(item.key===thisKey){
-					pf=item.pf;
+			rels.forEach(function changeRel(item) {
+				if (item.key === thisKey) {
+					pf = item.pf;
 				}
 			});
+			$("#nombre").attr("disabled", false);
+			$("#edad").attr("disabled", false);
+			$('input[name=gender]').attr("disabled", false);
+		} else {
+			$("#nombre").attr("disabled", true);
+			$("#edad").attr("disabled", true);
+			$('input[name=gender]').attr("disabled", true);
 		}
+
 		document.getElementById("propertiesPanel").style.display = "block";
 		document.getElementById("nombre").value = data.n || "";
 		document.getElementById("edad").value = data.e || "";
@@ -67,25 +75,41 @@ function onSelectionChanged(e) {
 	var model = e.diagram.model;
 
 	if (node instanceof go.Node) {
-		updateProperties(node.data,e.diagram);
+		updateProperties(node.data, e.diagram);
 	} else {
-		updateProperties(null,e.diagram);
+		updateProperties(null, e.diagram);
 	}
-	var paciente=e.diagram.findNodeForKey(0);
-	console.log(paciente.data);
+	var paciente = e.diagram.findNodeForKey(0);
+	if(node!==null){
+		var thisKey = node.data.key;
+		if (thisKey !== 0) {
+			var rels = paciente.data.rel;
+			rels.forEach(function changeRel(item) {
+				if (item.key === thisKey) {
+					model.startTransaction("Change rel");
+					model.setDataProperty(paciente.data, "r", item.pf);
+					model.commitTransaction("Change rel");
+				}
+			});
+		}else{
+			model.startTransaction("Change rel");
+			model.setDataProperty(paciente.data, "r","");
+			model.commitTransaction("Change rel");
+		}
+	}else{
+		model.startTransaction("Change rel");
+		model.setDataProperty(paciente.data, "r","");
+		model.commitTransaction("Change rel");
+	}
+}
 
-	var thisKey = node.data.key;
-	if(thisKey!==0){
-		var rels = paciente.data.rel;
-		rels.forEach(function changeRel(item){
-			if(item.key===thisKey){
-				model.startTransaction("Change rel");
-				model.setDataProperty(paciente.data, "r", item.pf);
-				console.log(paciente);
-				model.commitTransaction("Change rel");
-			}
-		});
-	}
+function lookForPacient(diagram){
+	diagram.model.startTransaction("Change stroke");
+	var pac = diagram.findNodeForKey(0);
+	pac.findObject('ICON').findObject('SHAPE').stroke = "yellow";
+	pac.findObject('ICON').findObject('SHAPE').strokeWidth = 4;
+	diagram.model.commitTransaction("Change stroke");
+	
 }
 
 
@@ -96,7 +120,7 @@ function onTextEdited(e) {
 	var node = tb.part;
 	if (node instanceof go.Node) {
 		updateData(tb.text, tb.name);
-		updateProperties(node.data,e.diagram);
+		updateProperties(node.data, e.diagram);
 	}
 }
 
@@ -109,10 +133,10 @@ function updateData(text, field) {
 	var itemO;
 
 	var thisKey = data.key;
-	if(thisKey!==0){
+	if (thisKey !== 0) {
 		var rels = paciente.data.rel;
-		rels.forEach(function changeRel(item){
-			if(item.key===thisKey){
+		rels.forEach(function changeRel(item) {
+			if (item.key === thisKey) {
 				itemO = item;
 			}
 		});
@@ -205,7 +229,7 @@ function updateData(text, field) {
 				} else if ($('input[name="cuidador"]:checked').length === 0) {
 					var opts = data.a;
 					var index = opts.indexOf("L");
-					console.log(index);
+					//console.log(index);
 					opts = removeFromOpts(opts, index);
 					opts = opts.concat([""]);
 					opts.pop();
@@ -227,37 +251,37 @@ function removeFromOpts(opts, index) {
 $("#agregarfam").click(function () {
 	var a = [];
 
-	if($('input[name=viven2]').is(':checked')){
-		a=a.concat(["A"]);
+	if ($('input[name=viven2]').is(':checked')) {
+		a = a.concat(["A"]);
 	}
-	if($('input[name=economico2]').is(':checked')){
-		a=a.concat(["D"]);
+	if ($('input[name=economico2]').is(':checked')) {
+		a = a.concat(["D"]);
 	}
-	if($('input[name=finado2]').is(':checked')){
-		a=a.concat(["S"]);
+	if ($('input[name=finado2]').is(':checked')) {
+		a = a.concat(["S"]);
 	}
-	if($('input[name=cuidador2]').is(':checked')){
-		a=a.concat(["L"]);
+	if ($('input[name=cuidador2]').is(':checked')) {
+		a = a.concat(["L"]);
 	}
-  var e = parseInt($("#edad2").val());
-  var n = $("#nombre2").val();
-	if(n.length>0 && $("#edad2").val().length>0 && (!isNaN(e))){
-	agregarFamiliar(myDiagram, {
-		'name': $("#nombre2").val(),
-		'edad': $("#edad2").val(),
-		'sexo': $('input[name=gender2]:checked').val(),
-		'relacion': $('input[name=relacion2]:checked').val(),
-		'nse': $('input[name=nse2]:checked').val(),
-		'telefono': $('#telefono2').val(),
-		'estadoCivil': $('input[name=estadoCivil2]:checked').val(),
-		'pacienteFamiliar': $('input[name=pacienteFamiliar2]:checked').val(),
-		'familiarPaciente': $('input[name=familiarPaciente2]:checked').val(),
-		'escolaridad': $('select[name=escolaridad2]').val(),
-		'religion': $('select[name=religion2]').val(),
-		'ocupacion': $("#ocupacion2").val(),
-		'estadoOcupa': $('select[id=estadoOcupa2]').val(),
-		'a' : a
-	});
+	var e = parseInt($("#edad2").val());
+	var n = $("#nombre2").val();
+	if (n.length > 0 && $("#edad2").val().length > 0 && (!isNaN(e))) {
+		agregarFamiliar(myDiagram, {
+			'name': $("#nombre2").val(),
+			'edad': $("#edad2").val(),
+			'sexo': $('input[name=gender2]:checked').val(),
+			'relacion': $('input[name=relacion2]:checked').val(),
+			'nse': $('input[name=nse2]:checked').val(),
+			'telefono': $('#telefono2').val(),
+			'estadoCivil': $('input[name=estadoCivil2]:checked').val(),
+			'pacienteFamiliar': $('input[name=pacienteFamiliar2]:checked').val(),
+			'familiarPaciente': $('input[name=familiarPaciente2]:checked').val(),
+			'escolaridad': $('select[name=escolaridad2]').val(),
+			'religion': $('select[name=religion2]').val(),
+			'ocupacion': $("#ocupacion2").val(),
+			'estadoOcupa': $('select[id=estadoOcupa2]').val(),
+			'a': a
+		});
 	}
 });
 
@@ -338,14 +362,14 @@ function agregarFamiliar(diagram, options) {
 		model.addNodeData(node);
 	}
 	var paciente = diagram.findNodeForKey(0);
-	var relString = "[{\"key\":"+node.key+",\"pf\":\""+options.pacienteFamiliar+"\"}]";
+	var relString = "[{\"key\":" + node.key + ",\"pf\":\"" + options.pacienteFamiliar + "\"}]";
 	var pacienteFamiliar = {
-		key:node.key,
-		pf:options.pacienteFamiliar
+		key: node.key,
+		pf: options.pacienteFamiliar
 	}
 
 	paciente.data.rel.push(pacienteFamiliar);
-	console.log(paciente.data);
+	//console.log(paciente.data);
 	updateTable(diagram);
 	document.getElementById("nombre2").value = "";
 	document.getElementById("edad2").value = "";
@@ -433,15 +457,15 @@ function borrarNodo(diagram) {
 	var person = diagram.selection.first();
 	if (person === null) return;
 	var model = diagram.model;
-	console.log(person.data.key);
+	//console.log(person.data.key);
 	diagram.startTransaction("delete Node");
-	if (person.isTreeLeaf&&person.data.key!==0) {
+	if (person.isTreeLeaf && person.data.key !== 0) {
 		diagram.remove(person);
 		document.getElementById("nombre").value = "";
 		document.getElementById("edad").value = "";
 		document.getElementById("ocupacion").value = "";
 		document.getElementById("estadoCivil").value = "";
-		document.getElementById("escolaridad").value ="";
+		document.getElementById("escolaridad").value = "";
 		document.getElementById("religion").value = "";
 		document.getElementById("telefono").value = "";
 		document.getElementById("estadoOcupa").value = "";
@@ -493,11 +517,11 @@ function updateTable(diagram) {
 		var data = nodos.value.data;
 		if (data.s !== "LinkLabel") {
 			var thisKey = data.key;
-			if(thisKey!==0){
+			if (thisKey !== 0) {
 				var rels = paciente.data.rel;
-				rels.forEach(function changeRel(item){
-					if(item.key===thisKey){
-						pf=item.pf;
+				rels.forEach(function changeRel(item) {
+					if (item.key === thisKey) {
+						pf = item.pf;
 					}
 				});
 			}
@@ -516,15 +540,15 @@ function updateTable(diagram) {
 			var esc = new_row.cells[5].getElementsByTagName('p')[0];
 			esc.innerHTML = nodos.value.data.escolaridad || "";
 			var pacFam = new_row.cells[6].getElementsByTagName('p')[0];
-			if(pf==="+")
+			if (pf === "+")
 				pacFam.innerHTML = "<span class=\"glyphicon glyphicon-plus\"></span>" || "";
-			if(pf==="-")
+			if (pf === "-")
 				pacFam.innerHTML = "<span class=\"glyphicon glyphicon-minus\"></span>" || "";
-			
+
 			var famPac = new_row.cells[7].getElementsByTagName('p')[0];
-			if(nodos.value.data.r==="+")
+			if (nodos.value.data.r === "+")
 				famPac.innerHTML = "<span class=\"glyphicon glyphicon-plus\"></span>" || "";
-			if(nodos.value.data.r==="-")
+			if (nodos.value.data.r === "-")
 				famPac.innerHTML = "<span class=\"glyphicon glyphicon-minus\"></span>" || "";
 			var religion = new_row.cells[8].getElementsByTagName('p')[0];
 			religion.innerHTML = nodos.value.data.religion || "";
@@ -573,10 +597,11 @@ function save(diagram) {
 			json: data,
 			comment: comment
 		},
-		success: function(data) {
+		success: function (data) {
 			console.log("SAVED");
+			alert("Familiograma guardado");
 		},
-		error: function(data) {
+		error: function (data) {
 			console.log(data)
 		}
 	});
@@ -585,20 +610,20 @@ function save(diagram) {
 
 
 function setID() {
-	var idPaciente = $('#paciente').val();
-	if (idPaciente == 0) {
-		alert("Por favor selecciona un paciente");
-		return;
-	}
-	$("#id").val(idPaciente);
+//	var idPaciente = $('#paciente').val();
+//	if (idPaciente == 0) {
+//		alert("Por favor selecciona un paciente");
+//		return;
+//	}
+//	$("#id").val(idPaciente);
 	$.ajax({
 		type: 'post',
 		data: {
-			id: idPaciente
+			id: $("#id").val()//idPaciente
 		},
 		dataType: 'json',
 		url: 'php/getPatient.php',
-		success: function(data) {
+		success: function (data) {
 			if (data != "") {
 				var newFam = "[{\"key\":0,\"n\":\"" + data.nombre + "\",\"e\":\"" + data.edad + "\",\"s\":\"" + data.sexo + "\", \"a\":[\"A\"], \"r\":\"\", \"rel\":[]}]";
 				console.log(newFam);
@@ -610,7 +635,7 @@ function setID() {
 						json: newFam,
 						comment: ""
 					},
-					success: function(data) {
+					success: function (data) {
 						init();
 					}
 				});
@@ -618,7 +643,7 @@ function setID() {
 				init();
 			}
 		},
-		error: function(data) {
+		error: function (data) {
 			console.log(data);
 		}
 	});

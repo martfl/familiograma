@@ -5,8 +5,8 @@
 	$id = $_POST["id"];
 	$comment = $_POST["comment"];
     $my_file = "json/paciente".$id.".json";
-	if (!$handle = fopen($my_file, 'w')) {
-         echo "Cannot open file ($filename)";
+	if (!$handle = fopen("../".$my_file, 'w')) {
+         echo "Cannot open file ($my_file)";
          exit;
     }
 

@@ -162,6 +162,7 @@ function init() {
 					name: "ICON"
 				},
 				$(go.Shape, "Square", {
+					name: "SHAPE",
 					width: 40,
 					height: 40,
 					strokeWidth: 2,
@@ -209,6 +210,7 @@ function init() {
 					name: "ICON"
 				},
 				$(go.Shape, "Circle", {
+					name: "SHAPE",
 					width: 40,
 					height: 40,
 					strokeWidth: 2,
@@ -319,6 +321,7 @@ function load(jsondata) {
 	// n: name, s: sex, m: mother, f: father, ux: wife, vir: husband, a: attributes/markers
 	setupDiagram(myDiagram, jsondata, 0);
 	updateTable(myDiagram);
+	lookForPacient(myDiagram);
 }
 
 
