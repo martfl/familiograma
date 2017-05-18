@@ -1,1 +1,3 @@
-[{"key":0,"n":"Martin Alberto Fernandez Lorenzo","e":"22","s":"M", "a":["A"], "r":"", "rel":[]}]
+
+[{"key":0,"n":"Martin Alberto Fernandez Lorenzo","e":"22","s":"M","a":["A"],"r":"-","rel":[{"key":-2,"pf":"+"},{"key":-4,"pf":"-"}],"ux":-2},{"n":"Maria","e":"24","s":"F","relacion":"conyuge","nse":"media","telefono":"5525395351","estadoCivil":"casado","r":"-","escolaridad":"preparatoria","religion":"catolicismo","ocupacion":"Ama de casa","estadoOcupa":"jubilado","a":["A","D"],"key":-2,"vir":0},{"n":"Andre","e":"21","s":"M","relacion":"hijo","nse":"media","telefono":"1234567890","estadoCivil":"soltero","r":"-","escolaridad":"universidad","religion":"catolicismo","ocupacion":"Estudiante","estadoOcupa":"activo","a":["A"],"f":-2,"m":0,"key":-4}]
+
