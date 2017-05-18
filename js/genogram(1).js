@@ -185,18 +185,21 @@ function init() {
 			),
 			$(go.TextBlock, {
 					textAlign: "center",
-					maxSize: new go.Size(80, NaN)
+					maxSize: new go.Size(80, NaN),
+					background:"white"
 				},
 				new go.Binding("text", "n")),
 			$(go.TextBlock, {
 					textAlign: "center",
-					maxSize: new go.Size(80, NaN)
+					maxSize: new go.Size(80, NaN),
+					background:"white"
 				},
 				new go.Binding("text", "e")),
 		  	//AGREGAR RELACION CON PACIENTE
 		  	$(go.TextBlock, {
 					textAlign: "center",
-					maxSize: new go.Size(80, NaN)
+					maxSize: new go.Size(80, NaN),
+					background:"white"
 				},
 				new go.Binding("text", "r"))
 		));
