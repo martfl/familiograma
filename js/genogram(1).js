@@ -233,18 +233,21 @@ function init() {
 			),
 			$(go.TextBlock, {
 					textAlign: "center",
-					maxSize: new go.Size(80, NaN)
+					maxSize: new go.Size(80, NaN),
+					background:"white"
 				},
 				new go.Binding("text", "n")),
 			$(go.TextBlock, {
 					textAlign: "center",
-					maxSize: new go.Size(80, NaN)
+					maxSize: new go.Size(80, NaN),
+					background:"white"
 				},
 				new go.Binding("text", "e")),
 		  	//AGREGAR RELACION CON PACIENTE
 		  	$(go.TextBlock, {
 					textAlign: "center",
-					maxSize: new go.Size(80, NaN)
+					maxSize: new go.Size(80, NaN),
+					background:"white"
 				},
 				new go.Binding("text", "r"))
 		));
@@ -263,6 +266,7 @@ function init() {
 	myDiagram.linkTemplate = // for parent-child relationships
 		$(go.Link, {
 				routing: go.Link.Orthogonal,
+				curve: go.Link.JumpGap,
 				selectionAdorned: true,
 				curviness: 15,
 				reshapable: true,

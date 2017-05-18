@@ -299,20 +299,20 @@ function agregarFamiliar(diagram, options) {
 		escolaridad: options.escolaridad,
 		religion: options.religion,
 		ocupacion: options.ocupacion,
-		//estadoOcupa: options.estadoOcupa,
 		a: options.a
 	}
 	if (options.relacion == "conyuge") {
 		model.addNodeData(node);
 		var mlab = {
 			s: "LinkLabel"
-		};
+		}
+
 		if (node.s == "M") {
 			node.ux = person.data.key;
-			person.data.vir = node.key
+			person.data.vir = node.key;
 		} else {
 			node.vir = person.data.key;
-			person.data.ux = node.key
+			person.data.ux = node.key;
 		}
 		model.addNodeData(mlab);
 		var mdata = {
@@ -325,33 +325,46 @@ function agregarFamiliar(diagram, options) {
 	} else if (options.relacion == "hijo") {
 		var marriage = [];
 		myDiagram.selection.each(function (part) {
-			marriage.push(part.data.key);
+			marriage.push(part.data);
 		});
 		if (marriage.length > 2) {
 			alert("Más de 2 familiares seleccionados");
 			return;
 		}
 		if (marriage.length == 1) {
-			alert("Selecciona 2 familiares, por favor")
-			return;
-		}
-		var link = findMarriage(diagram, marriage[0], marriage[1]);
-		if (link != null) {
-			if (marriage[0].s == 'M') {
-				node.m = marriage[0];
-				node.f = marriage[1];
-			} else {
-				node.f = marriage[0];
-				node.m = marriage[1];
+			if(marriage[0].s==='M'){
+				node.f = marriage[0].key;
 			}
+			if(marriage[0].s==='F'){
+				node.m = marriage[0].key;
+			}
+
 			model.addNodeData(node);
 			var cdata = {
-				from: link.data.labelKeys[0],
+				from: marriage[0].s=='M'?node.f:node.m,
 				to: node.key
 			};
 			model.addLinkData(cdata);
-		} else {
-			alert("Matrimonio no encontrado");
+
+		}else if(marriage.length===2){
+			var link = findMarriage(diagram, marriage[0].key, marriage[1].key);
+			if (link != null) {
+				if (marriage[0].s == 'M') {
+					node.f = marriage[0].key;
+					node.m = marriage[1].key;
+				} else {
+					node.m = marriage[0].key;
+					node.f = marriage[1].key;
+				}
+				model.addNodeData(node);
+				var cdata = {
+					from: link.data.labelKeys[0],
+					to: node.key
+				};
+				model.addLinkData(cdata);
+			} else {
+				alert("Matrimonio no encontrado");
+			}
 		}
 	} else if (options.relacion == "srelacion") {
 		model.addNodeData(node);
