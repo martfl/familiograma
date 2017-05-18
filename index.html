@@ -4,13 +4,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
-	<title>Familiograma - Glassfish</title>
+	<title>Socialis - Familiograma</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/dashboard.css" rel="stylesheet">
 	<style>
 		label {
 			display: block;
 		}
+
 	</style>
 </head>
 
@@ -18,16 +19,16 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-md-3 sidebar">
-				<form id="datos" class="form-group" action="/familiograma" >
+				<form id="datos" class="form-group" action="/familiograma">
 					<input id="id" type="hidden">
 					<div class="row">
 						<div class="col-sm-6">
 							<label class="control-label">Nombre:</label>
-							<input id="nombre2" placeholder="Nombre" class="form-control" pattern=".{3,}" type="text" name="nombre" required >
+							<input id="nombre2" placeholder="Nombre" class="form-control" pattern=".{3,}" type="text" name="nombre" required>
 						</div>
 						<div class="col-sm-6">
 							<label class="control-label">Edad</label>
-							<input id="edad2" class="form-control" placeholder="edad" type="number" name="edad"  required >
+							<input id="edad2" class="form-control" placeholder="edad" type="number" name="edad" required>
 						</div>
 					</div>
 					<br>
@@ -101,20 +102,18 @@
 					<br>
 					<div class="row">
 						<div class="col-sm-6">
-							
+
 							<label class="control-label">Paciente-Familiar</label>
 							<div class="radio">
-								<label for="buena"><input checked="" id="buena" type="radio" name="pacienteFamiliar2" value="buena"> Buena</label>
-								<label for="regular"><input id="regular" type="radio" name="pacienteFamiliar2" value="regular"> Regular</label>
-								<label for="mala"><input id="mala" type="radio" name="pacienteFamiliar2" value="mala"> Mala</label>
+								<label for="buena"><input checked="" id="buena" type="radio" name="pacienteFamiliar2" value="+"> Buena</label>
+								<label for="mala"><input id="mala" type="radio" name="pacienteFamiliar2" value="-"> Mala</label>
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<label class="control-label">Familiar-Paciente</label>
 							<div class="radio">
-								<label for="buenaFp"><input checked="" id="buenaFP" type="radio" name="familiarPaciente2" value="buena"> Buena</label>
-								<label for="regularFP"><input id="regularFP" type="radio" name="familiarPaciente2" value="regular"> Regular</label>
-								<label for="malaFP"><input id="malaFP" type="radio" name="familiarPaciente2" value="mala"> Mala</label>
+								<label for="buenaFP"><input checked="" id="buenaFP" type="radio" name="familiarPaciente2" value="+"> Buena</label>
+								<label for="malaFP"><input id="malaFP" type="radio" name="familiarPaciente2" value="-"> Mala</label>
 							</div>
 						</div>
 					</div>
@@ -171,27 +170,33 @@
 							</div>
 						</div>
 						<div class="col-sm-6">
-							
 						</div>
 					</div>
 					<button class="btn btn-default btn-block" type="submit" id="agregarfam">Agregar Familiar</button>
-
 					<button class="btn btn-default btn-block" onclick="agregarPadres(myDiagram)">Agregar Padres</button>
 				</form>
 			</div>
-
 			<div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 main">
 				<h1 class="page-header">Familiograma</h1>
 				<div class="form-group">
 					<input type="button" class="btn btn-default" onclick="save(myDiagram)" value="Guardar">
 					<input type="button" class="btn btn-default" onclick="makeBlob(myDiagram)" value="Exportar Imagen">
 				</div>
-				<div class="col-md-12 col-xs-12">
+				<div class="col-md-9 col-xs-9">
 					<div id="myDiagramDiv" style="border: solid 1px black; width:100%; height:500px"></div>
 				</div>
+				<div class="col-md-3 col-xs-3">
+					<div class="form-group">
+						<label for="comment">Comentarios</label>
+						<textarea class="form-control" rows="5" id="comment"></textarea>
+					</div>
+					<div class="form-group">
+						<img src="img/img.png" class="img-responsive">
+					</div>
+				</div>
 				<br>
-				<div class="col-xs-12">
-					<form class="form-inline">
+				<div class="col-sm-12">
+					<form class="form">
 						<div id="propertiesPanel" class="form-group">
 							<br>
 							<div class="row">
@@ -219,7 +224,7 @@
 								<div class="col-sm-3">
 									<div class="form-group">
 										<label class="control-label">Ocupación:</label>
-										<input id="ocupacion" class="form-control" type="text" name="ocupacion" onchange="updateData(this.value, 'ocupacion')">
+										<input id="ocupacion" class="form-control" type="text" class="form-control" name="ocupacion" onchange="updateData(this.value, 'ocupacion')">
 									</div>
 								</div>
 
@@ -316,17 +321,16 @@
 								<div class="col-sm-3">
 									<label class="control-label">Relación Paciente-Familiar</label>
 									<div class="radio">
-										<label for="buena"><input id="buena" type="radio" name="pacienteFamiliar" value="buena" onchange="updateData(this.value, 'pacienteFamiliar')">Buena</label>
-										<label for="regular"><input id="regular" type="radio" name="pacienteFamiliar" value="regular" onchange="updateData(this.value, 'pacienteFamiliar')">Regular</label>
-										<label for="mala"><input id="mala" type="radio" name="pacienteFamiliar" value="mala" onchange="updateData(this.value, 'pacienteFamiliar')"> Mala</label>
+										<label for="buena"><input id="buena" type="radio" name="pacienteFamiliar" value="+" onchange="updateData(this.value, 'pacienteFamiliar')">Buena</label>
+										<label for="mala"><input id="mala" type="radio" name="pacienteFamiliar" value="-" onchange="updateData(this.value, 'pacienteFamiliar')"> Mala</label>
+
 									</div>
 								</div>
 								<div class="col-sm-3">
 									<label class="control-label">Relación Familiar-Paciente</label>
 									<div class="radio">
-										<label for="buena"><input id="buena" type="radio" name="familiarPaciente" value="buena" onchange="updateData(this.value, 'familiarPaciente')">Buena</label>
-										<label for="regular"><input id="regular" type="radio" name="familiarPaciente" value="regular" onchange="updateData(this.value, 'familiarPaciente')">Regular</label>
-										<label for="mala"><input id="mala" type="radio" name="familiarPaciente" value="mala" onchange="updateData(this.value, 'familiarPaciente')"> Mala</label>
+										<label for="buena"><input id="buena" type="radio" name="familiarPaciente" value="+" onchange="updateData(this.value, 'familiarPaciente')">Buena</label>
+										<label for="mala"><input id="mala" type="radio" name="familiarPaciente" value="-" onchange="updateData(this.value, 'familiarPaciente')"> Mala</label>
 									</div>
 								</div>
 								<div class="col-sm-3">
@@ -427,19 +431,23 @@
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/go-debug.js"></script>
-	<script>
-		$(document).ready(function() {
-			$('#myModal').modal('show');
-			$("input[name=gender2][value=M]").click();
-			$("input[name=relacion2][value=conyuge]").click();
-			$.get('php/getPatients.php', function(data) {
-				$('#paciente').append(data);
-			});
-		});
-
-	</script>
 	<script src="js/genogram(1).js"></script>
 	<script src="js/functions.js"></script>
+	<script>
+		$(document).ready(function() {
+			$("#id").val($.urlParam('idPaciente'));
+			//$('#myModal').modal('show');
+			$("input[name=gender2][value=M]").click();
+			$("input[name=relacion2][value=conyuge]").click();
+			//$.get('php/getPatients.php', function(data) {$('#paciente').append(data);});
+			setID();
+		});
+		$.urlParam = function(name) {
+			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+			return results[1] || 0;
+		}
+
+	</script>
 	<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">

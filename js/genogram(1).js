@@ -162,6 +162,7 @@ function init() {
 					name: "ICON"
 				},
 				$(go.Shape, "Square", {
+					name: "SHAPE",
 					width: 40,
 					height: 40,
 					strokeWidth: 2,
@@ -194,7 +195,6 @@ function init() {
 				new go.Binding("text", "e")),
 		  	//AGREGAR RELACION CON PACIENTE
 		  	$(go.TextBlock, {
-					text: "+",
 					textAlign: "center",
 					maxSize: new go.Size(80, NaN)
 				},
@@ -210,6 +210,7 @@ function init() {
 					name: "ICON"
 				},
 				$(go.Shape, "Circle", {
+					name: "SHAPE",
 					width: 40,
 					height: 40,
 					strokeWidth: 2,
@@ -293,7 +294,6 @@ function init() {
 				stroke: "blue"
 			})
 		));
-
 	getURL();
 }
 
@@ -321,7 +321,7 @@ function load(jsondata) {
 	// n: name, s: sex, m: mother, f: father, ux: wife, vir: husband, a: attributes/markers
 	setupDiagram(myDiagram, jsondata, 0);
 	updateTable(myDiagram);
-
+	lookForPacient(myDiagram);
 }
 
 

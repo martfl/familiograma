@@ -1,11 +1,1 @@
-[
-	{ "key": 0, "n": "Juan López", "e": "81", "s": "M", "ux": 1,"a":["A"],"r":[{"key": 1, "fp": "+", "pf": "-"},{"key": 2, "fp": "+", "pf": "-"}]},
-	{ "key": 1, "n": "Alicia Gómez", "e": "71", "s": "F","vir":0,"a":["S"]},
-	{ "key": 2, "n": "Roberto López Gómez", "e": "47", "s": "M", "m": 1,"f":0},
-	{ "key": 3, "n": "Ana López Gómez", "e": "42", "s": "F", "m": 1,"f":0},
-	{ "key": 4, "n": "Renata López Castro", "e": "35", "s": "F", "m": 5,"f":0,"a":["A"]},
-	{ "key": 5, "n": "Barbara Castro", "e": "68", "s": "F","vir":0,"a":["A"]},
-	{ "key": 6, "n": "Gabriela Sánchez", "e": "42", "s": "F","vir":2},
-	{ "key": 7, "n": "Daniel López Sánchez", "e": "16", "s": "M","f":2,"m":6},
-	{ "key": 8, "n": "Alberto Alcántara", "e": "40", "s": "M","ux":4,"a":["A"]}
-]
+[{"key":0,"n":"Juan López","e":"81","s":"M","ux":1,"a":["A"],"rel":[{"key":1,"pf":"+"},{"key":2,"pf":"-"}],"r":""},{"key":1,"n":"Alicia Gómez","e":"71","s":"F","vir":0,"a":["S"],"r":"+"},{"key":2,"n":"Roberto López Gómez","e":"47","s":"M","m":1,"f":0,"r":"-"},{"key":3,"n":"Ana López Gómez","e":"42","s":"F","m":1,"f":0},{"key":4,"n":"Renata López Castro","e":"35","s":"F","m":5,"f":0,"a":["A"]},{"key":5,"n":"Barbara Castro","e":"68","s":"F","vir":0,"a":["A"]},{"key":6,"n":"Gabriela Sánchez","e":"42","s":"F","vir":2},{"key":7,"n":"Daniel López Sánchez","e":"18","s":"M","f":2,"m":6,"r":"+"},{"key":8,"n":"Alberto Alcántara","e":"40","s":"M","ux":4,"a":["A"]}]

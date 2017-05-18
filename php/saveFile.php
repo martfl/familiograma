@@ -1,12 +1,12 @@
 <?php
 	include "db.php";
-	$link = connectDB("socialis.cpivj72xcp0f.us-west-2.rds.amazonaws.com", "root", "developer", "Socialis-dev");
+	$link = connectDB();
     $json = $_POST["json"];
 	$id = $_POST["id"];
 	$comment = $_POST["comment"];
     $my_file = "json/paciente".$id.".json";
-	if (!$handle = fopen($my_file, 'w')) {
-         echo "Cannot open file ($filename)";
+	if (!$handle = fopen("../".$my_file, 'w')) {
+         echo "Cannot open file ($my_file)";
          exit;
     }
 
