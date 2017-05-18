@@ -16,6 +16,6 @@
     }
 
     fclose($handle);
-	$query = "UPDATE FAMILIOGRAMA SET `json` = '{$my_file}', `comment` = '{$comment}'  WHERE `FAMILIOGRAMA`.`id` = {$id}";
+	$query = "UPDATE FAMILIOGRAMA SET `json` = '{$my_file}', `comment` = '{$comment}'  WHERE `familiograma`.`id` = {$id}";
 	$show = mysqli_query($link, $query) or die ("Error");
 ?>
