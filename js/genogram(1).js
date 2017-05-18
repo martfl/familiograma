@@ -162,6 +162,7 @@ function init() {
 					name: "ICON"
 				},
 				$(go.Shape, "Square", {
+					name: "SHAPE",
 					width: 40,
 					height: 40,
 					strokeWidth: 2,
@@ -209,6 +210,7 @@ function init() {
 					name: "ICON"
 				},
 				$(go.Shape, "Circle", {
+					name: "SHAPE",
 					width: 40,
 					height: 40,
 					strokeWidth: 2,
@@ -231,18 +233,21 @@ function init() {
 			),
 			$(go.TextBlock, {
 					textAlign: "center",
-					maxSize: new go.Size(80, NaN)
+					maxSize: new go.Size(80, NaN),
+					background:"white"
 				},
 				new go.Binding("text", "n")),
 			$(go.TextBlock, {
 					textAlign: "center",
-					maxSize: new go.Size(80, NaN)
+					maxSize: new go.Size(80, NaN),
+					background:"white"
 				},
 				new go.Binding("text", "e")),
 		  	//AGREGAR RELACION CON PACIENTE
 		  	$(go.TextBlock, {
 					textAlign: "center",
-					maxSize: new go.Size(80, NaN)
+					maxSize: new go.Size(80, NaN),
+					background:"white"
 				},
 				new go.Binding("text", "r"))
 		));
@@ -261,6 +266,7 @@ function init() {
 	myDiagram.linkTemplate = // for parent-child relationships
 		$(go.Link, {
 				routing: go.Link.Orthogonal,
+				curve: go.Link.JumpGap,
 				selectionAdorned: true,
 				curviness: 15,
 				reshapable: true,
@@ -319,6 +325,7 @@ function load(jsondata) {
 	// n: name, s: sex, m: mother, f: father, ux: wife, vir: husband, a: attributes/markers
 	setupDiagram(myDiagram, jsondata, 0);
 	updateTable(myDiagram);
+	lookForPacient(myDiagram);
 }
 
 

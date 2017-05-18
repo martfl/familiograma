@@ -1,6 +1,6 @@
 // Update the HTML elements for editing the properties of the currently selected node, if any
 
-function updateProperties(data,diagram) {
+function updateProperties(data, diagram) {
 	if (data === null) {
 		document.getElementById("propertiesPanel").style.display = "none";
 		document.getElementById("nombre").value = "";
@@ -10,24 +10,31 @@ function updateProperties(data,diagram) {
 		var pf;
 
 		var thisKey = data.key;
-		if(thisKey!==0){
+		if (thisKey !== 0) {
 			var rels = paciente.data.rel;
-			rels.forEach(function changeRel(item){
-				if(item.key===thisKey){
-					pf=item.pf;
+			rels.forEach(function changeRel(item) {
+				if (item.key === thisKey) {
+					pf = item.pf;
 				}
 			});
+			$("#nombre").attr("disabled", false);
+			$("#edad").attr("disabled", false);
+			$('input[name=gender]').attr("disabled", false);
+		} else {
+			$("#nombre").attr("disabled", true);
+			$("#edad").attr("disabled", true);
+			$('input[name=gender]').attr("disabled", true);
 		}
+
 		document.getElementById("propertiesPanel").style.display = "block";
 		document.getElementById("nombre").value = data.n || "";
 		document.getElementById("edad").value = data.e || "";
 		document.getElementById("ocupacion").value = data.ocupacion || "";
 		document.getElementById("estadoCivil").value = data.estadoCivil || "";
 		document.getElementById("escolaridad").value = data.escolaridad || "";
-		document.getElementById("estadoOcupa").value = data.estadoOcupa || "";
+		//document.getElementById("estadoOcupa").value = data.estadoOcupa || "";
 		document.getElementById("religion").value = data.religion || "";
 		document.getElementById("telefono").value = data.telefono || "";
-		$("input[name=nse][value='" + data.nse + "']").prop("checked", true) || "";
 		$("input[name=gender][value='" + data.s + "']").prop("checked", true) || "";
 		$("input[name=pacienteFamiliar][value='" + pf + "']").prop("checked", true) || "";
 		$("input[name=familiarPaciente][value='" + data.r + "']").prop("checked", true) || "";
@@ -67,25 +74,41 @@ function onSelectionChanged(e) {
 	var model = e.diagram.model;
 
 	if (node instanceof go.Node) {
-		updateProperties(node.data,e.diagram);
+		updateProperties(node.data, e.diagram);
 	} else {
-		updateProperties(null,e.diagram);
+		updateProperties(null, e.diagram);
 	}
-	var paciente=e.diagram.findNodeForKey(0);
-	console.log(paciente.data);
+	var paciente = e.diagram.findNodeForKey(0);
+	if(node!==null){
+		var thisKey = node.data.key;
+		if (thisKey !== 0) {
+			var rels = paciente.data.rel;
+			rels.forEach(function changeRel(item) {
+				if (item.key === thisKey) {
+					model.startTransaction("Change rel");
+					model.setDataProperty(paciente.data, "r", item.pf);
+					model.commitTransaction("Change rel");
+				}
+			});
+		}else{
+			model.startTransaction("Change rel");
+			model.setDataProperty(paciente.data, "r","");
+			model.commitTransaction("Change rel");
+		}
+	}else{
+		model.startTransaction("Change rel");
+		model.setDataProperty(paciente.data, "r","");
+		model.commitTransaction("Change rel");
+	}
+}
 
-	var thisKey = node.data.key;
-	if(thisKey!==0){
-		var rels = paciente.data.rel;
-		rels.forEach(function changeRel(item){
-			if(item.key===thisKey){
-				model.startTransaction("Change rel");
-				model.setDataProperty(paciente.data, "r", item.pf);
-				console.log(paciente);
-				model.commitTransaction("Change rel");
-			}
-		});
-	}
+function lookForPacient(diagram){
+	diagram.model.startTransaction("Change stroke");
+	var pac = diagram.findNodeForKey(0);
+	pac.findObject('ICON').findObject('SHAPE').stroke = "yellow";
+	pac.findObject('ICON').findObject('SHAPE').strokeWidth = 4;
+	diagram.model.commitTransaction("Change stroke");
+	
 }
 
 
@@ -96,7 +119,7 @@ function onTextEdited(e) {
 	var node = tb.part;
 	if (node instanceof go.Node) {
 		updateData(tb.text, tb.name);
-		updateProperties(node.data,e.diagram);
+		updateProperties(node.data, e.diagram);
 	}
 }
 
@@ -109,10 +132,10 @@ function updateData(text, field) {
 	var itemO;
 
 	var thisKey = data.key;
-	if(thisKey!==0){
+	if (thisKey !== 0) {
 		var rels = paciente.data.rel;
-		rels.forEach(function changeRel(item){
-			if(item.key===thisKey){
+		rels.forEach(function changeRel(item) {
+			if (item.key === thisKey) {
 				itemO = item;
 			}
 		});
@@ -128,8 +151,6 @@ function updateData(text, field) {
 			model.setDataProperty(data, "e", text);
 		} else if (field === "ocupacion") {
 			model.setDataProperty(data, "ocupacion", text);
-		} else if (field === "nse") {
-			model.setDataProperty(data, "nse", text);
 		} else if (field === "estadoCivil") {
 			model.setDataProperty(data, "estadoCivil", text);
 		} else if (field === "escolaridad") {
@@ -139,7 +160,7 @@ function updateData(text, field) {
 		} else if (field === "telefono") {
 			model.setDataProperty(data, "telefono", text);
 		} else if (field === "estadoOcupa") {
-			model.setDataProperty(data, "estadoOcupa", text);
+			//model.setDataProperty(data, "estadoOcupa", text);
 		} else if (field === "pacienteFamiliar") {
 			model.setDataProperty(itemO, "pf", text);
 		} else if (field === "familiarPaciente") {
@@ -205,7 +226,7 @@ function updateData(text, field) {
 				} else if ($('input[name="cuidador"]:checked').length === 0) {
 					var opts = data.a;
 					var index = opts.indexOf("L");
-					console.log(index);
+					//console.log(index);
 					opts = removeFromOpts(opts, index);
 					opts = opts.concat([""]);
 					opts.pop();
@@ -227,37 +248,36 @@ function removeFromOpts(opts, index) {
 $("#agregarfam").click(function () {
 	var a = [];
 
-	if($('input[name=viven2]').is(':checked')){
-		a=a.concat(["A"]);
+	if ($('input[name=viven2]').is(':checked')) {
+		a = a.concat(["A"]);
 	}
-	if($('input[name=economico2]').is(':checked')){
-		a=a.concat(["D"]);
+	if ($('input[name=economico2]').is(':checked')) {
+		a = a.concat(["D"]);
 	}
-	if($('input[name=finado2]').is(':checked')){
-		a=a.concat(["S"]);
+	if ($('input[name=finado2]').is(':checked')) {
+		a = a.concat(["S"]);
 	}
-	if($('input[name=cuidador2]').is(':checked')){
-		a=a.concat(["L"]);
+	if ($('input[name=cuidador2]').is(':checked')) {
+		a = a.concat(["L"]);
 	}
-  var e = parseInt($("#edad2").val());
-  var n = $("#nombre2").val();
-	if(n.length>0 && $("#edad2").val().length>0 && (!isNaN(e))){
-	agregarFamiliar(myDiagram, {
-		'name': $("#nombre2").val(),
-		'edad': $("#edad2").val(),
-		'sexo': $('input[name=gender2]:checked').val(),
-		'relacion': $('input[name=relacion2]:checked').val(),
-		'nse': $('input[name=nse2]:checked').val(),
-		'telefono': $('#telefono2').val(),
-		'estadoCivil': $('input[name=estadoCivil2]:checked').val(),
-		'pacienteFamiliar': $('input[name=pacienteFamiliar2]:checked').val(),
-		'familiarPaciente': $('input[name=familiarPaciente2]:checked').val(),
-		'escolaridad': $('select[name=escolaridad2]').val(),
-		'religion': $('select[name=religion2]').val(),
-		'ocupacion': $("#ocupacion2").val(),
-		'estadoOcupa': $('select[id=estadoOcupa2]').val(),
-		'a' : a
-	});
+	var e = parseInt($("#edad2").val());
+	var n = $("#nombre2").val();
+	if (n.length > 0 && $("#edad2").val().length > 0 && (!isNaN(e))) {
+		agregarFamiliar(myDiagram, {
+			'name': $("#nombre2").val(),
+			'edad': $("#edad2").val(),
+			'sexo': $('input[name=gender2]:checked').val(),
+			'relacion': $('input[name=relacion2]:checked').val(),
+			'telefono': $('#telefono2').val(),
+			'estadoCivil': $('input[name=estadoCivil2]:checked').val(),
+			'pacienteFamiliar': $('input[name=pacienteFamiliar2]:checked').val(),
+			'familiarPaciente': $('input[name=familiarPaciente2]:checked').val(),
+			'escolaridad': $('select[name=escolaridad2]').val(),
+			'religion': $('select[name=religion2]').val(),
+			'ocupacion': $("#ocupacion2").val(),
+			//'estadoOcupa': $('select[id=estadoOcupa2]').val(),
+			'a': a
+		});
 	}
 });
 
@@ -272,7 +292,6 @@ function agregarFamiliar(diagram, options) {
 		e: options.edad,
 		s: options.sexo,
 		relacion: options.relacion,
-		nse: options.nse,
 		telefono: options.telefono,
 		cuidador: options.cuidador,
 		estadoCivil: options.estadoCivil,
@@ -280,20 +299,20 @@ function agregarFamiliar(diagram, options) {
 		escolaridad: options.escolaridad,
 		religion: options.religion,
 		ocupacion: options.ocupacion,
-		estadoOcupa: options.estadoOcupa,
 		a: options.a
 	}
 	if (options.relacion == "conyuge") {
 		model.addNodeData(node);
 		var mlab = {
 			s: "LinkLabel"
-		};
+		}
+
 		if (node.s == "M") {
 			node.ux = person.data.key;
-			person.data.vir = node.key
+			person.data.vir = node.key;
 		} else {
 			node.vir = person.data.key;
-			person.data.ux = node.key
+			person.data.ux = node.key;
 		}
 		model.addNodeData(mlab);
 		var mdata = {
@@ -306,53 +325,66 @@ function agregarFamiliar(diagram, options) {
 	} else if (options.relacion == "hijo") {
 		var marriage = [];
 		myDiagram.selection.each(function (part) {
-			marriage.push(part.data.key);
+			marriage.push(part.data);
 		});
 		if (marriage.length > 2) {
 			alert("Más de 2 familiares seleccionados");
 			return;
 		}
 		if (marriage.length == 1) {
-			alert("Selecciona 2 familiares, por favor")
-			return;
-		}
-		var link = findMarriage(diagram, marriage[0], marriage[1]);
-		if (link != null) {
-			if (marriage[0].s == 'M') {
-				node.m = marriage[0];
-				node.f = marriage[1];
-			} else {
-				node.f = marriage[0];
-				node.m = marriage[1];
+			if(marriage[0].s==='M'){
+				node.f = marriage[0].key;
 			}
+			if(marriage[0].s==='F'){
+				node.m = marriage[0].key;
+			}
+
 			model.addNodeData(node);
 			var cdata = {
-				from: link.data.labelKeys[0],
+				from: marriage[0].s=='M'?node.f:node.m,
 				to: node.key
 			};
 			model.addLinkData(cdata);
-		} else {
-			alert("Matrimonio no encontrado");
+
+		}else if(marriage.length===2){
+			var link = findMarriage(diagram, marriage[0].key, marriage[1].key);
+			if (link != null) {
+				if (marriage[0].s == 'M') {
+					node.f = marriage[0].key;
+					node.m = marriage[1].key;
+				} else {
+					node.m = marriage[0].key;
+					node.f = marriage[1].key;
+				}
+				model.addNodeData(node);
+				var cdata = {
+					from: link.data.labelKeys[0],
+					to: node.key
+				};
+				model.addLinkData(cdata);
+			} else {
+				alert("Matrimonio no encontrado");
+			}
 		}
 	} else if (options.relacion == "srelacion") {
 		model.addNodeData(node);
 	}
 	var paciente = diagram.findNodeForKey(0);
-	var relString = "[{\"key\":"+node.key+",\"pf\":\""+options.pacienteFamiliar+"\"}]";
+	var relString = "[{\"key\":" + node.key + ",\"pf\":\"" + options.pacienteFamiliar + "\"}]";
 	var pacienteFamiliar = {
-		key:node.key,
-		pf:options.pacienteFamiliar
+		key: node.key,
+		pf: options.pacienteFamiliar
 	}
 
 	paciente.data.rel.push(pacienteFamiliar);
-	console.log(paciente.data);
+	//console.log(paciente.data);
 	updateTable(diagram);
 	document.getElementById("nombre2").value = "";
 	document.getElementById("edad2").value = "";
 	document.getElementById("telefono2").value = "";
 	document.getElementById("ocupacion2").value = "";
 	document.getElementById("escolaridad2").value = "";
-	document.getElementById("estadoOcupa2").value = "";
+	//document.getElementById("estadoOcupa2").value = "";
 	document.getElementById("religion2").value = "";
 
 	$("input[name=viven2]").prop("checked", false);
@@ -433,18 +465,18 @@ function borrarNodo(diagram) {
 	var person = diagram.selection.first();
 	if (person === null) return;
 	var model = diagram.model;
-	console.log(person.data.key);
+	//console.log(person.data.key);
 	diagram.startTransaction("delete Node");
-	if (person.isTreeLeaf&&person.data.key!==0) {
+	if (person.isTreeLeaf && person.data.key !== 0) {
 		diagram.remove(person);
 		document.getElementById("nombre").value = "";
 		document.getElementById("edad").value = "";
 		document.getElementById("ocupacion").value = "";
 		document.getElementById("estadoCivil").value = "";
-		document.getElementById("escolaridad").value ="";
+		document.getElementById("escolaridad").value = "";
 		document.getElementById("religion").value = "";
 		document.getElementById("telefono").value = "";
-		document.getElementById("estadoOcupa").value = "";
+		//document.getElementById("estadoOcupa").value = "";
 		$("input[name=viveConPaciente]").prop("checked", false);
 		$("input[name=apoyoEconomico]").prop("checked", false);
 		$("input[name=finado]").prop("checked", false);
@@ -493,11 +525,11 @@ function updateTable(diagram) {
 		var data = nodos.value.data;
 		if (data.s !== "LinkLabel") {
 			var thisKey = data.key;
-			if(thisKey!==0){
+			if (thisKey !== 0) {
 				var rels = paciente.data.rel;
-				rels.forEach(function changeRel(item){
-					if(item.key===thisKey){
-						pf=item.pf;
+				rels.forEach(function changeRel(item) {
+					if (item.key === thisKey) {
+						pf = item.pf;
 					}
 				});
 			}
@@ -509,29 +541,27 @@ function updateTable(diagram) {
 			age.innerHTML = nodos.value.data.e || "";
 			var sex = new_row.cells[2].getElementsByTagName('p')[0];
 			sex.innerHTML = nodos.value.data.s || "";
-			var nse = new_row.cells[3].getElementsByTagName('p')[0];
-			nse.innerHTML = nodos.value.data.nse || "";
 			var ec = new_row.cells[4].getElementsByTagName('p')[0];
 			ec.innerHTML = nodos.value.data.estadoCivil || "";
 			var esc = new_row.cells[5].getElementsByTagName('p')[0];
 			esc.innerHTML = nodos.value.data.escolaridad || "";
 			var pacFam = new_row.cells[6].getElementsByTagName('p')[0];
-			if(pf==="+")
+			if (pf === "+")
 				pacFam.innerHTML = "<span class=\"glyphicon glyphicon-plus\"></span>" || "";
-			if(pf==="-")
+			if (pf === "-")
 				pacFam.innerHTML = "<span class=\"glyphicon glyphicon-minus\"></span>" || "";
-			
+
 			var famPac = new_row.cells[7].getElementsByTagName('p')[0];
-			if(nodos.value.data.r==="+")
+			if (nodos.value.data.r === "+")
 				famPac.innerHTML = "<span class=\"glyphicon glyphicon-plus\"></span>" || "";
-			if(nodos.value.data.r==="-")
+			if (nodos.value.data.r === "-")
 				famPac.innerHTML = "<span class=\"glyphicon glyphicon-minus\"></span>" || "";
 			var religion = new_row.cells[8].getElementsByTagName('p')[0];
 			religion.innerHTML = nodos.value.data.religion || "";
 			var oc = new_row.cells[9].getElementsByTagName('p')[0];
 			oc.innerHTML = nodos.value.data.ocupacion || "";
-			var estadoOc = new_row.cells[10].getElementsByTagName('p')[0];
-			estadoOc.innerHTML = nodos.value.data.estadoOcupa || "";
+			//var estadoOc = new_row.cells[10].getElementsByTagName('p')[0];
+			//estadoOc.innerHTML = nodos.value.data.estadoOcupa || "";
 			var vive = new_row.cells[11].getElementsByTagName('p')[0];
 			var economico = new_row.cells[12].getElementsByTagName('p')[0];
 			var finado = new_row.cells[13].getElementsByTagName('p')[0];
@@ -573,10 +603,11 @@ function save(diagram) {
 			json: data,
 			comment: comment
 		},
-		success: function(data) {
+		success: function (data) {
 			console.log("SAVED");
+			alert("Familiograma guardado");
 		},
-		error: function(data) {
+		error: function (data) {
 			console.log(data)
 		}
 	});
@@ -585,20 +616,20 @@ function save(diagram) {
 
 
 function setID() {
-	var idPaciente = $('#paciente').val();
-	if (idPaciente == 0) {
-		alert("Por favor selecciona un paciente");
-		return;
-	}
-	$("#id").val(idPaciente);
+//	var idPaciente = $('#paciente').val();
+//	if (idPaciente == 0) {
+//		alert("Por favor selecciona un paciente");
+//		return;
+//	}
+//	$("#id").val(idPaciente);
 	$.ajax({
 		type: 'post',
 		data: {
-			id: idPaciente
+			id: $("#id").val()//idPaciente
 		},
 		dataType: 'json',
 		url: 'php/getPatient.php',
-		success: function(data) {
+		success: function (data) {
 			if (data != "") {
 				var newFam = "[{\"key\":0,\"n\":\"" + data.nombre + "\",\"e\":\"" + data.edad + "\",\"s\":\"" + data.sexo + "\", \"a\":[\"A\"], \"r\":\"\", \"rel\":[]}]";
 				console.log(newFam);
@@ -610,7 +641,7 @@ function setID() {
 						json: newFam,
 						comment: ""
 					},
-					success: function(data) {
+					success: function (data) {
 						init();
 					}
 				});
@@ -618,7 +649,7 @@ function setID() {
 				init();
 			}
 		},
-		error: function(data) {
+		error: function (data) {
 			console.log(data);
 		}
 	});
