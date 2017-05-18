@@ -1,6 +1,6 @@
 <?php
 	include "db.php";
-	$link = connectDB();
+	$link = connectDB("socialis.cpivj72xcp0f.us-west-2.rds.amazonaws.com", "root", "developer", "Socialis-dev");
     $json = $_POST["json"];
 	$id = $_POST["id"];
 	$comment = $_POST["comment"];

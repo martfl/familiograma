@@ -141,7 +141,7 @@
 								<option value="cristianismo">Cristianismo</option>
 								<option value="judaismo">Judaismo</option>
 								<option value="islam">Islam</option>
-								<option value="budismo">Buddhismo</option>
+								<option value="otro">Otra</option>
 							</select>
 						</div>
 					</div>
@@ -151,6 +151,7 @@
 							<label class="control-label">Ocupación</label>
 							<input class="form-control" id="ocupacion2" type="text" name="ocupacion2">
 						</div>
+<!--
 						<div class="col-sm-6">
 							<label class="control-label">Estado ocupacional</label>
 							<select class="form-control" id="estadoOcupa2">
@@ -159,18 +160,7 @@
 								<option value="desempleado">Desempleado</option>
 							</select>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-6">
-							<label class="control-label">NSE</label>
-							<div class="radio">
-								<label for="Alta"><input id="alta" type="radio" name="nse2" value="alta">Alta</label>
-								<label for="Media"><input id="media" type="radio" name="nse2" value="media">Media</label>
-								<label for="Baja"><input checked="" id="baja" type="radio" name="nse2" value="baja">Baja</label>
-							</div>
-						</div>
-						<div class="col-sm-6">
-						</div>
+-->
 					</div>
 					<button class="btn btn-default btn-block" type="submit" id="agregarfam">Agregar Familiar</button>
 					<button class="btn btn-default btn-block" onclick="agregarPadres(myDiagram)">Agregar Padres</button>
@@ -243,16 +233,6 @@
 								</div>
 								<div class="col-sm-3">
 									<div class="form-group">
-										<label class="control-label">NSE:</label>
-										<div class="radio">
-											<label class="radio-inline" for="alta"><input id="alta" type="radio" name="nse" onchange="updateData(this.value, 'nse')" value="alta"> Alta</label>
-											<label class="radio-inline" for="media"><input id="media" type="radio" name="nse" onchange="updateData(this.value, 'nse')" value="media"> Media</label>
-											<label class="radio-inline" for="baja"><input id="baja" type="radio" name="nse" onchange="updateData(this.value, 'nse')" value="baja"> Baja</label>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="form-group">
 										<label class="control-label">Escolaridad:</label>
 										<select class="form-control" id="escolaridad" name="escolaridad" onchange="updateData(this.value, 'escolaridad')">
 											<option value="ninguna">Ninguna</option>
@@ -276,7 +256,7 @@
 											<option value="cristianismo">Cristianismo</option>
 											<option value="judaismo">Judaismo</option>
 											<option value="islam">Islam</option>
-											<option value="budismo">Buddhismo</option>
+											<option value="otro">Otra</option>
 										</select>
 									</div>
 								</div>
@@ -288,6 +268,7 @@
 										<input id="telefono" class="form-control" type="text" name="telefono" onchange="updateData(this.value, 'telefono')">
 									</div>
 								</div>
+<!--
 								<div class="col-sm-3">
 									<div class="form-group">
 										<label class="control-label">Estado ocupacional</label>
@@ -298,6 +279,7 @@
 										</select>
 									</div>
 								</div>
+-->
 								<div class="col-sm-3">
 									<div class="form-group checkbox">
 										<label><strong>Opciones:</strong></label>
@@ -361,7 +343,7 @@
 										<th>Familiar-Paciente</th>
 										<th>Religión</th>
 										<th>Ocupación</th>
-										<th>Estado Ocupacional</th>
+<!--										<th>Estado Ocupacional</th>-->
 										<th>Vive con paciente</th>
 										<th>Apoyo económico</th>
 										<th>Finado</th>
